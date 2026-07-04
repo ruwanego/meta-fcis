@@ -68,6 +68,9 @@ Milestone 5:
 
 Milestone 6:
 - transaction planning
+
+Milestone 7:
+- strict graph validator
 ```
 
 Current status:
@@ -111,6 +114,7 @@ meta-fcis/
         policy-smoke.mjs
         intent-smoke.mjs
         transaction-smoke.mjs
+        graph-smoke.mjs
       src/
         index.ts
 
@@ -482,6 +486,7 @@ Completed order:
 11. Policy evaluator
 12. Intent authorization
 13. Transaction plan builder
+14. Strict graph validator
 ```
 
 Future work requires explicit instruction.
@@ -496,7 +501,7 @@ Do not add future features without an explicit milestone request.
 
 ## 13. Required Files for @meta-fcis/core
 
-Create exactly these files for Milestone 0, Milestone 2, Milestone 3, Milestone 4, Milestone 5, and Milestone 6:
+Create exactly these files for Milestone 0, Milestone 2, Milestone 3, Milestone 4, Milestone 5, Milestone 6, and Milestone 7:
 
 ```txt
 packages/core/package.json
@@ -507,6 +512,7 @@ packages/core/scripts/selector-smoke.mjs
 packages/core/scripts/policy-smoke.mjs
 packages/core/scripts/intent-smoke.mjs
 packages/core/scripts/transaction-smoke.mjs
+packages/core/scripts/graph-smoke.mjs
 packages/core/src/index.ts
 packages/core/src/protocol/actor.ts
 packages/core/src/protocol/context.ts
