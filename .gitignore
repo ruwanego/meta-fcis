@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+logs
+*.log
+# Temporary agent files or scratch files
+.gemini/
+brain/
+scratch/
