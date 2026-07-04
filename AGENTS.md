@@ -37,29 +37,44 @@ Pure functions own domain decisions.
 
 ---
 
-## 2. Current Milestone
+## 2. Current Core Status
 
-Current milestone:
+Current completed core milestones:
 
 ```txt
-Milestone 6: core transaction planning
+Milestone 0:
+- protocol types
+- graph types
+- adapter interfaces
+- RuntimeError
+- validateGraph
+- validateIntentSet
+- executeRoute skeleton
+
+Milestone 1:
+- smoke verification
+
+Milestone 2:
+- expression resolver
+
+Milestone 3:
+- dependency selector resolver
+
+Milestone 4:
+- policy evaluator
+
+Milestone 5:
+- intent authorization
+
+Milestone 6:
+- transaction planning
 ```
 
-Build only:
+Current status:
 
 ```txt
-protocol types
-graph types
-adapter interfaces
-RuntimeError
-validateGraph
-validateIntentSet
-executeRoute skeleton
-expression resolver
-dependency selector resolver
-policy evaluator
-intent authorization
-transaction planning
+Current status: @meta-fcis/core standalone semantic functions completed through Milestone 6.
+Next milestone must be explicitly requested.
 ```
 
 Do not build future milestones.
@@ -94,6 +109,8 @@ meta-fcis/
         expression-smoke.mjs
         selector-smoke.mjs
         policy-smoke.mjs
+        intent-smoke.mjs
+        transaction-smoke.mjs
       src/
         index.ts
 
@@ -185,6 +202,7 @@ SQL
 Prisma
 Drizzle
 database clients
+auth implementations
 JWT libraries
 OIDC libraries
 Redis
@@ -245,13 +263,12 @@ validate IntentSet shape
 return ExecuteRouteResult
 ```
 
-Milestone 0 must not:
+executeRoute.ts must not yet be wired to policy evaluation, intent authorization, transaction planning, or transaction execution unless explicitly requested in a future milestone.
+
+Current core must not:
 
 ```txt
 execute intents
-evaluate policies
-authorize allowedIntents
-execute transaction plans
 execute transactions
 compile TypeSpec
 serve HTTP
@@ -449,30 +466,31 @@ If they fail, fix before committing.
 
 ## 12. Implementation Order
 
-Do work in this order:
+Completed order:
 
 ```txt
 1. Git hygiene
-2. Root workspace files
-3. packages/core package files
-4. protocol types
-5. graph types
-6. RuntimeError
-7. adapter interfaces
-8. validateGraph
-9. validateIntentSet
-10. executeRoute
-11. index exports
-12. build
-13. typecheck
-14. commit
+2. Workspace scaffold
+3. Core package scaffold
+4. Protocol and graph contracts
+5. Runtime errors and adapter interfaces
+6. Graph and IntentSet validators
+7. executeRoute skeleton
+8. Smoke verification
+9. Expression resolver
+10. Selector resolver
+11. Policy evaluator
+12. Intent authorization
+13. Transaction plan builder
 ```
 
-Do not reorder into framework work.
+Future work requires explicit instruction.
+
+Do not drift into framework work.
 
 Do not jump to plugins.
 
-Do not add future features.
+Do not add future features without an explicit milestone request.
 
 ---
 
@@ -483,6 +501,12 @@ Create exactly these files for Milestone 0, Milestone 2, Milestone 3, Milestone 
 ```txt
 packages/core/package.json
 packages/core/tsconfig.json
+packages/core/scripts/smoke.mjs
+packages/core/scripts/expression-smoke.mjs
+packages/core/scripts/selector-smoke.mjs
+packages/core/scripts/policy-smoke.mjs
+packages/core/scripts/intent-smoke.mjs
+packages/core/scripts/transaction-smoke.mjs
 packages/core/src/index.ts
 packages/core/src/protocol/actor.ts
 packages/core/src/protocol/context.ts
@@ -508,10 +532,8 @@ packages/core/src/policies/evaluatePolicy.ts
 packages/core/src/intents/types.ts
 packages/core/src/intents/authorizeIntent.ts
 packages/core/src/intents/authorizeIntentSet.ts
-packages/core/scripts/intent-smoke.mjs
 packages/core/src/transactions/types.ts
 packages/core/src/transactions/buildTransactionPlan.ts
-packages/core/scripts/transaction-smoke.mjs
 ```
 
 Do not add more unless required for compilation.
@@ -582,12 +604,13 @@ The implementation is wrong if any of these happen:
 [ ] Zod is installed
 [ ] SQL/ORM package is installed
 [ ] HTTP server is implemented
+[ ] shell package is created
 [ ] plugin package is created
 [ ] core imports from shell
 [ ] core imports from plugin
 [ ] core executes intents
-[ ] core evaluates policies
-[ ] core executes transaction plans
+[ ] executeRoute wires policy evaluation without an explicit milestone
+[ ] core executes transactions
 [ ] core generates app-graph.json
 [ ] core compiles TypeSpec
 ```
@@ -600,23 +623,19 @@ Ask before proceeding.
 
 ## 17. Caveman Summary
 
-Build core.
+Core owns graph semantics.
 
-Core knows graph.
+Core owns expression semantics.
 
-Core knows route.
+Core owns selector semantics.
 
-Core knows request.
+Core owns policy semantics.
 
-Core knows adapters.
+Core owns intent authorization semantics.
 
-Core builds context.
+Core owns transaction plan semantics.
 
-Core calls pure function.
-
-Core validates IntentSet.
-
-Core returns response.
+Core does not execute transactions.
 
 Core does not know frameworks.
 
