@@ -42,7 +42,7 @@ Pure functions own domain decisions.
 Current milestone:
 
 ```txt
-Milestone 5: core intent authorization
+Milestone 6: core transaction planning
 ```
 
 Build only:
@@ -59,6 +59,7 @@ expression resolver
 dependency selector resolver
 policy evaluator
 intent authorization
+transaction planning
 ```
 
 Do not build future milestones.
@@ -137,6 +138,10 @@ meta-fcis/
           types.ts
           authorizeIntent.ts
           authorizeIntentSet.ts
+
+        transactions/
+          types.ts
+          buildTransactionPlan.ts
 ```
 
 Do not invent extra packages yet.
@@ -246,7 +251,7 @@ Milestone 0 must not:
 execute intents
 evaluate policies
 authorize allowedIntents
-build transaction plans
+execute transaction plans
 execute transactions
 compile TypeSpec
 serve HTTP
@@ -473,7 +478,7 @@ Do not add future features.
 
 ## 13. Required Files for @meta-fcis/core
 
-Create exactly these files for Milestone 0, Milestone 2, Milestone 3, and Milestone 4:
+Create exactly these files for Milestone 0, Milestone 2, Milestone 3, Milestone 4, Milestone 5, and Milestone 6:
 
 ```txt
 packages/core/package.json
@@ -504,6 +509,9 @@ packages/core/src/intents/types.ts
 packages/core/src/intents/authorizeIntent.ts
 packages/core/src/intents/authorizeIntentSet.ts
 packages/core/scripts/intent-smoke.mjs
+packages/core/src/transactions/types.ts
+packages/core/src/transactions/buildTransactionPlan.ts
+packages/core/scripts/transaction-smoke.mjs
 ```
 
 Do not add more unless required for compilation.
@@ -579,7 +587,7 @@ The implementation is wrong if any of these happen:
 [ ] core imports from plugin
 [ ] core executes intents
 [ ] core evaluates policies
-[ ] core builds transaction plans
+[ ] core executes transaction plans
 [ ] core generates app-graph.json
 [ ] core compiles TypeSpec
 ```
