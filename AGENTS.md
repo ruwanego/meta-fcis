@@ -42,7 +42,7 @@ Pure functions own domain decisions.
 Current milestone:
 
 ```txt
-Milestone 4: core policy evaluator
+Milestone 5: core intent authorization
 ```
 
 Build only:
@@ -58,6 +58,7 @@ executeRoute skeleton
 expression resolver
 dependency selector resolver
 policy evaluator
+intent authorization
 ```
 
 Do not build future milestones.
@@ -131,6 +132,11 @@ meta-fcis/
           types.ts
           evaluatePolicyExpression.ts
           evaluatePolicy.ts
+
+        intents/
+          types.ts
+          authorizeIntent.ts
+          authorizeIntentSet.ts
 ```
 
 Do not invent extra packages yet.
@@ -494,6 +500,10 @@ packages/core/src/selectors/resolveDependencySelectors.ts
 packages/core/src/policies/types.ts
 packages/core/src/policies/evaluatePolicyExpression.ts
 packages/core/src/policies/evaluatePolicy.ts
+packages/core/src/intents/types.ts
+packages/core/src/intents/authorizeIntent.ts
+packages/core/src/intents/authorizeIntentSet.ts
+packages/core/scripts/intent-smoke.mjs
 ```
 
 Do not add more unless required for compilation.
