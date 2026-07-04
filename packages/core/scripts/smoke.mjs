@@ -1,12 +1,16 @@
-import { RuntimeError, executeRoute as baseExecuteRoute } from "../dist/index.js";
+import {
+  RuntimeError,
+  executeRoute as baseExecuteRoute,
+  validateIntentSet
+} from "../dist/index.js";
 
 // Wrap executeRoute to support custom response fields and status mapping on RuntimeError
 async function executeRoute(graph, request, adapters) {
   try {
     const res = await baseExecuteRoute(graph, request, adapters);
     return {
-      status: res.intentSet.status,
-      body: res.intentSet.body,
+      status: res.intentSet.httpStatus,
+      body: res.intentSet.responsePayload,
       diagnostics: {
         routeKey: request.route,
         graphVersion: graph.irVersion || graph.version
@@ -111,30 +115,33 @@ async function runSmokeTest() {
         const task = context.dependencies.targetTask;
         if (!task) {
           return {
-            status: 404,
-            body: { success: false, error: "Task missing" },
+            success: false,
+            httpStatus: 404,
+            responsePayload: { success: false, error: "Task missing" },
             intents: []
           };
         }
         if (task.userId !== context.actor.id) {
           return {
-            status: 403,
-            body: { success: false, error: "Forbidden" },
+            success: false,
+            httpStatus: 403,
+            responsePayload: { success: false, error: "Forbidden" },
             intents: []
           };
         }
         return {
-          status: 200,
-          body: { success: true, message: "Task complete" },
+          success: true,
+          httpStatus: 200,
+          responsePayload: { success: true, message: "Task complete" },
           intents: [
             {
-              name: "MUTATE_ENTITY",
-              payload: {
+              type: "MUTATE_ENTITY",
+              meta: {
                 entityName: "Task",
                 operation: "UPDATE",
-                targetId: "task-1",
-                payload: { isCompleted: true }
-              }
+                targetId: "task-1"
+              },
+              payload: { isCompleted: true }
             }
           ]
         };
@@ -191,6 +198,103 @@ async function runSmokeTest() {
   }
 
   console.log("Failure test assertions passed.");
+
+  const validIntentSet = validateIntentSet({
+    success: true,
+    httpStatus: 200,
+    responsePayload: { success: true },
+    intents: [
+      {
+        type: "MUTATE_ENTITY",
+        meta: {
+          entityName: "Task",
+          operation: "UPDATE",
+          targetId: "task-1"
+        },
+        payload: {
+          isCompleted: true
+        }
+      }
+    ]
+  });
+
+  if (validIntentSet.intents.length !== 1) {
+    console.error(`Assertion failed: expected 1 validated intent, got ${validIntentSet.intents.length}`);
+    process.exit(1);
+  }
+
+  const invalidIntentSets = [
+    {
+      label: "stale generic intent shape",
+      value: {
+        success: true,
+        httpStatus: 200,
+        responsePayload: { success: true },
+        intents: [
+          {
+            name: "completeTask",
+            payload: {}
+          }
+        ]
+      }
+    },
+    {
+      label: "loose operation",
+      value: {
+        success: true,
+        httpStatus: 200,
+        responsePayload: { success: true },
+        intents: [
+          {
+            type: "MUTATE_ENTITY",
+            meta: {
+              entityName: "Task",
+              operation: "UPSERT"
+            },
+            payload: {}
+          }
+        ]
+      }
+    },
+    {
+      label: "payload array",
+      value: {
+        success: true,
+        httpStatus: 200,
+        responsePayload: { success: true },
+        intents: [
+          {
+            type: "MUTATE_ENTITY",
+            meta: {
+              entityName: "Task",
+              operation: "UPDATE",
+              targetId: "task-1"
+            },
+            payload: []
+          }
+        ]
+      }
+    }
+  ];
+
+  for (const { label, value } of invalidIntentSets) {
+    try {
+      validateIntentSet(value);
+      console.error(`Assertion failed: expected ${label} to throw CORE_OUTPUT_INVALID`);
+      process.exit(1);
+    } catch (error) {
+      if (!(error instanceof RuntimeError)) {
+        console.error(`Assertion failed: expected ${label} error to be RuntimeError, got:`, error);
+        process.exit(1);
+      }
+      if (error.code !== "CORE_OUTPUT_INVALID") {
+        console.error(`Assertion failed: expected ${label} error code CORE_OUTPUT_INVALID, got ${error.code}`);
+        process.exit(1);
+      }
+    }
+  }
+
+  console.log("IntentSet validator assertions passed.");
   console.log("Smoke verification passed.");
 }
 
