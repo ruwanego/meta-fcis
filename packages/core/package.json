@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "smoke": "pnpm build && node scripts/smoke.mjs",
     "smoke:expressions": "pnpm build && node scripts/expression-smoke.mjs",
-    "smoke:selectors": "pnpm build && node scripts/selector-smoke.mjs"
+    "smoke:selectors": "pnpm build && node scripts/selector-smoke.mjs",
+    "smoke:policies": "pnpm build && node scripts/policy-smoke.mjs"
   }
 }

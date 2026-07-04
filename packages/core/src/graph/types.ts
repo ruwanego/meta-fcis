@@ -35,3 +35,11 @@ export interface DependencySelector {
   }>;
   onMissing: OnMissingBehavior;
 }
+
+export type PolicyEffect = "allow" | "deny";
+
+export interface PolicyDefinition {
+  effect: PolicyEffect;
+  when: unknown;
+}
+

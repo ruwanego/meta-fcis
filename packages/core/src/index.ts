@@ -6,7 +6,17 @@ export type { Request } from "./protocol/request.js";
 export type { ExecuteRouteResult } from "./protocol/response.js";
 
 // Graph
-export type { DependencyConfig, RouteConfig, AppGraph, DependencySelector } from "./graph/types.js";
+export type {
+  DependencyConfig,
+  RouteConfig,
+  AppGraph,
+  DependencySelector,
+  DependencyCardinality,
+  SortDirection,
+  OnMissingBehavior,
+  PolicyEffect,
+  PolicyDefinition,
+} from "./graph/types.js";
 export { validateGraph } from "./graph/validateGraph.js";
 
 // Adapters
@@ -48,4 +58,14 @@ export { resolveSelectorWhere } from "./selectors/resolveSelectorWhere.js";
 export { resolveDependencySelector } from "./selectors/resolveDependencySelector.js";
 export { resolveDependencySelectors } from "./selectors/resolveDependencySelectors.js";
 
-
+// Policies
+export type {
+  PolicyOperator,
+  PolicyEvaluationErrorReason,
+  PolicyEvaluationError,
+  PolicyEvaluationResult,
+  EvaluatePolicyExpressionArgs,
+  EvaluatePolicyArgs,
+} from "./policies/types.js";
+export { evaluatePolicyExpression } from "./policies/evaluatePolicyExpression.js";
+export { evaluatePolicy } from "./policies/evaluatePolicy.js";
