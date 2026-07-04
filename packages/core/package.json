@@ -12,6 +12,7 @@
     "smoke:selectors": "pnpm build && node scripts/selector-smoke.mjs",
     "smoke:policies": "pnpm build && node scripts/policy-smoke.mjs",
     "smoke:intents": "pnpm build && node scripts/intent-smoke.mjs",
-    "smoke:transactions": "pnpm build && node scripts/transaction-smoke.mjs"
+    "smoke:transactions": "pnpm build && node scripts/transaction-smoke.mjs",
+    "smoke:graph": "pnpm build && node scripts/graph-smoke.mjs"
   }
 }

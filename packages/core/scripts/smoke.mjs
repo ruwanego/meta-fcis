@@ -31,32 +31,125 @@ async function executeRoute(graph, request, adapters) {
 
 async function runSmokeTest() {
   const graph = {
-    version: "meta-fcis.graph.v1",
     irVersion: "meta-fcis.graph.v1",
-    "application.name": "TodoApp",
+    application: {
+      name: "TodoApp",
+      title: "Todo App"
+    },
     engineCompatibility: { min: "0.1.0", max: "0.x" },
     entities: {
-      Task: {}
+      Task: {
+        table: "tasks",
+        idField: "id",
+        deletePolicy: "hard",
+        fields: {
+          id: {
+            type: "string",
+            required: true,
+            mutable: false,
+            creatable: false,
+            serverOwned: true,
+            isId: true
+          },
+          title: {
+            type: "string",
+            required: true,
+            mutable: true,
+            creatable: true,
+            serverOwned: false
+          },
+          isCompleted: {
+            type: "boolean",
+            required: true,
+            mutable: true,
+            creatable: true,
+            serverOwned: false
+          },
+          userId: {
+            type: "string",
+            required: true,
+            mutable: false,
+            creatable: false,
+            serverOwned: true
+          }
+        }
+      }
     },
     models: {
-      CompleteTaskDto: {},
-      CompleteTaskResponse: {},
-      ErrorResponse: {}
+      CompleteTaskDto: {
+        fields: {
+          taskId: {
+            type: "string",
+            required: true
+          }
+        }
+      },
+      CompleteTaskResponse: {
+        fields: {
+          success: {
+            type: "boolean",
+            required: true
+          },
+          message: {
+            type: "string",
+            required: true
+          }
+        }
+      },
+      ErrorResponse: {
+        fields: {
+          error: {
+            type: "string",
+            required: true
+          }
+        }
+      }
     },
     routes: {
       "Tasks.complete": {
         path: "/tasks/complete",
         pureFunction: "completeTask",
         schema: "CompleteTaskDto",
-        auth: { required: true },
-        input: { bodyModel: "CompleteTaskDto" },
-        paramsModel: null,
-        queryModel: null,
+        transport: {
+          kind: "http",
+          method: "POST",
+          path: "/tasks/complete"
+        },
+        auth: { required: true, strategy: "jwt" },
+        input: {
+          bodyModel: "CompleteTaskDto",
+          paramsModel: null,
+          queryModel: null
+        },
+        output: {
+          successModel: "CompleteTaskResponse",
+          errorModel: "ErrorResponse"
+        },
         handler: {
+          kind: "pure-function",
           file: "./tasks.pure.ts",
           function: "completeTask"
         },
-        dependencies: {}
+        dependencies: {
+          targetTask: {
+            entity: "Task",
+            cardinality: "one",
+            where: {
+              id: "$request.payload.taskId"
+            },
+            project: ["id", "title", "isCompleted", "userId"],
+            onMissing: "null"
+          }
+        },
+        allowedIntents: [
+          {
+            type: "MUTATE_ENTITY",
+            entity: "Task",
+            operation: "UPDATE",
+            fields: ["isCompleted"],
+            targetId: "$request.payload.taskId"
+          }
+        ]
       }
     }
   };
