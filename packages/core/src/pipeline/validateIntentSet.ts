@@ -8,11 +8,12 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 function invalid(message: string, details?: unknown): never {
-  const error = new RuntimeError("CORE_OUTPUT_INVALID", message, details) as RuntimeError & {
-    status: number;
-  };
-  error.status = 500;
-  throw error;
+  throw new RuntimeError({
+    code: "CORE_OUTPUT_INVALID",
+    message,
+    status: 500,
+    details,
+  });
 }
 
 export function validateIntentSet(value: unknown): IntentSet {

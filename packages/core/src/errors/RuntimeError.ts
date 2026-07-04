@@ -9,14 +9,28 @@ export type RuntimeErrorCode =
   | "INTERNAL_ERROR";
 
 export class RuntimeError extends Error {
-  public readonly code: RuntimeErrorCode;
-  public readonly details?: unknown;
+  readonly code: RuntimeErrorCode;
+  readonly status!: number;
+  readonly details?: unknown;
 
-  constructor(code: RuntimeErrorCode, message: string, details?: unknown) {
-    super(message);
-    this.code = code;
-    this.details = details;
+  constructor(args: {
+    code: RuntimeErrorCode;
+    message: string;
+    status?: number;
+    details?: unknown;
+  }) {
+    super(args.message);
+
     this.name = "RuntimeError";
-    Object.setPrototypeOf(this, RuntimeError.prototype);
+    this.code = args.code;
+    Object.defineProperty(this, "status", {
+      value: args.status ?? 500,
+      enumerable: true,
+      configurable: true,
+    });
+
+    if ("details" in args) {
+      this.details = args.details;
+    }
   }
 }

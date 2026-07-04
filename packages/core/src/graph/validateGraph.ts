@@ -18,12 +18,15 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 function invalid(path: string, message: string, value?: unknown): never {
-  const error = new RuntimeError("GRAPH_INVALID", message, {
-    path,
-    value,
-  }) as RuntimeError & { status: number };
-  error.status = 500;
-  throw error;
+  throw new RuntimeError({
+    code: "GRAPH_INVALID",
+    message,
+    status: 500,
+    details: {
+      path,
+      value,
+    },
+  });
 }
 
 function requirePlainObject(value: unknown, path: string): Record<string, unknown> {

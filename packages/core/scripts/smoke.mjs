@@ -18,13 +18,6 @@ async function executeRoute(graph, request, adapters) {
       intentSet: res.intentSet
     };
   } catch (error) {
-    if (error instanceof RuntimeError) {
-      if (error.code === "ROUTE_NOT_FOUND") {
-        error.status = 404;
-      } else if (error.code === "REQUEST_VALIDATION_FAILED") {
-        error.status = 400;
-      }
-    }
     throw error;
   }
 }
@@ -164,15 +157,19 @@ async function runSmokeTest() {
     schema: {
       validate: (schema, payload) => {
         if (!payload || typeof payload !== "object") {
-          const err = new RuntimeError("REQUEST_VALIDATION_FAILED", "Value must be an object");
-          err.status = 400;
-          throw err;
+          throw new RuntimeError({
+            code: "REQUEST_VALIDATION_FAILED",
+            message: "Value must be an object",
+            status: 400
+          });
         }
         if (schema === "CompleteTaskDto") {
           if (typeof payload.taskId !== "string") {
-            const err = new RuntimeError("REQUEST_VALIDATION_FAILED", "taskId must be a string");
-            err.status = 400;
-            throw err;
+            throw new RuntimeError({
+              code: "REQUEST_VALIDATION_FAILED",
+              message: "taskId must be a string",
+              status: 400
+            });
           }
         }
         return payload;
