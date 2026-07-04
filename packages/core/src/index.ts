@@ -1,7 +1,7 @@
 // Protocol
 export type { Actor } from "./protocol/actor.js";
 export type { ContextBundle } from "./protocol/context.js";
-export type { Intent, IntentSet } from "./protocol/intent.js";
+export type { Intent, IntentSet, MetaInstruction, MetaInstructionOperation } from "./protocol/intent.js";
 export type { Request } from "./protocol/request.js";
 export type { ExecuteRouteResult } from "./protocol/response.js";
 
@@ -9,7 +9,14 @@ export type { ExecuteRouteResult } from "./protocol/response.js";
 export type {
   DependencyConfig,
   RouteConfig,
+  RouteDefinition,
   AppGraph,
+  FieldType,
+  FieldDefinition,
+  EntityDefinition,
+  EntityDeletePolicy,
+  AllowedIntentDefinition,
+  IntentOperation,
   DependencySelector,
   DependencyCardinality,
   SortDirection,
@@ -69,3 +76,14 @@ export type {
 } from "./policies/types.js";
 export { evaluatePolicyExpression } from "./policies/evaluatePolicyExpression.js";
 export { evaluatePolicy } from "./policies/evaluatePolicy.js";
+
+// Intents
+export type {
+  IntentAuthorizationErrorReason,
+  IntentAuthorizationError,
+  IntentAuthorizationResult,
+  AuthorizeIntentArgs,
+  AuthorizeIntentSetArgs,
+} from "./intents/types.js";
+export { authorizeIntent } from "./intents/authorizeIntent.js";
+export { authorizeIntentSet } from "./intents/authorizeIntentSet.js";
