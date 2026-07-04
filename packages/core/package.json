@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "smoke": "pnpm build && node scripts/smoke.mjs"
+    "smoke": "pnpm build && node scripts/smoke.mjs",
+    "smoke:expressions": "pnpm build && node scripts/expression-smoke.mjs"
   }
 }

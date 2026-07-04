@@ -25,3 +25,13 @@ export type { RuntimeErrorCode } from "./errors/RuntimeError.js";
 // Pipeline
 export { executeRoute } from "./pipeline/executeRoute.js";
 export { validateIntentSet } from "./pipeline/validateIntentSet.js";
+
+// Expressions
+export type {
+  ExpressionScopeName,
+  ExpressionScope,
+  ExpressionResolution,
+} from "./expressions/types.js";
+export { resolvePath } from "./expressions/resolvePath.js";
+export { resolveExpression } from "./expressions/resolveExpression.js";
+
