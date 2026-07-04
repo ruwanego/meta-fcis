@@ -42,7 +42,7 @@ Pure functions own domain decisions.
 Current milestone:
 
 ```txt
-Milestone 3: core dependency selector resolver
+Milestone 4: core policy evaluator
 ```
 
 Build only:
@@ -57,6 +57,7 @@ validateIntentSet
 executeRoute skeleton
 expression resolver
 dependency selector resolver
+policy evaluator
 ```
 
 Do not build future milestones.
@@ -90,6 +91,7 @@ meta-fcis/
         smoke.mjs
         expression-smoke.mjs
         selector-smoke.mjs
+        policy-smoke.mjs
       src/
         index.ts
 
@@ -124,6 +126,11 @@ meta-fcis/
           resolveSelectorWhere.ts
           resolveDependencySelector.ts
           resolveDependencySelectors.ts
+
+        policies/
+          types.ts
+          evaluatePolicyExpression.ts
+          evaluatePolicy.ts
 ```
 
 Do not invent extra packages yet.
@@ -460,7 +467,7 @@ Do not add future features.
 
 ## 13. Required Files for @meta-fcis/core
 
-Create exactly these files for Milestone 0, Milestone 2, and Milestone 3:
+Create exactly these files for Milestone 0, Milestone 2, Milestone 3, and Milestone 4:
 
 ```txt
 packages/core/package.json
@@ -484,6 +491,9 @@ packages/core/src/selectors/types.ts
 packages/core/src/selectors/resolveSelectorWhere.ts
 packages/core/src/selectors/resolveDependencySelector.ts
 packages/core/src/selectors/resolveDependencySelectors.ts
+packages/core/src/policies/types.ts
+packages/core/src/policies/evaluatePolicyExpression.ts
+packages/core/src/policies/evaluatePolicy.ts
 ```
 
 Do not add more unless required for compilation.
