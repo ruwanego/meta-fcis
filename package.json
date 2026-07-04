@@ -2,9 +2,12 @@
   "name": "meta-fcis",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@latest",
+  "packageManager": "pnpm@11.9.0",
   "scripts": {
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
   }
 }
