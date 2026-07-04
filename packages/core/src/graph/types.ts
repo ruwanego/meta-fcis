@@ -19,13 +19,19 @@ export interface AppGraph {
   routes: Record<string, RouteConfig>;
 }
 
+export type DependencyCardinality = "one" | "many";
+export type SortDirection = "asc" | "desc";
+export type OnMissingBehavior = "null" | "empty" | "error";
+
 export interface DependencySelector {
   entity: string;
-  cardinality: "one" | "many";
+  cardinality: DependencyCardinality;
   where: Record<string, unknown>;
   project: string[];
   limit?: number;
-  orderBy?: string | { field: string; direction: "asc" | "desc" }[];
-  onMissing: "null" | "error";
+  orderBy?: Array<{
+    field: string;
+    direction: SortDirection;
+  }>;
+  onMissing: OnMissingBehavior;
 }
-
