@@ -18,3 +18,14 @@ export interface AppGraph {
   version: string;
   routes: Record<string, RouteConfig>;
 }
+
+export interface DependencySelector {
+  entity: string;
+  cardinality: "one" | "many";
+  where: Record<string, unknown>;
+  project: string[];
+  limit?: number;
+  orderBy?: string | { field: string; direction: "asc" | "desc" }[];
+  onMissing: "null" | "error";
+}
+

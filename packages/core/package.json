@@ -8,6 +8,7 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "smoke": "pnpm build && node scripts/smoke.mjs",
-    "smoke:expressions": "pnpm build && node scripts/expression-smoke.mjs"
+    "smoke:expressions": "pnpm build && node scripts/expression-smoke.mjs",
+    "smoke:selectors": "pnpm build && node scripts/selector-smoke.mjs"
   }
 }

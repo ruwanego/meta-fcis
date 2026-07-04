@@ -6,7 +6,7 @@ export type { Request } from "./protocol/request.js";
 export type { ExecuteRouteResult } from "./protocol/response.js";
 
 // Graph
-export type { DependencyConfig, RouteConfig, AppGraph } from "./graph/types.js";
+export type { DependencyConfig, RouteConfig, AppGraph, DependencySelector } from "./graph/types.js";
 export { validateGraph } from "./graph/validateGraph.js";
 
 // Adapters
@@ -34,4 +34,18 @@ export type {
 } from "./expressions/types.js";
 export { resolvePath } from "./expressions/resolvePath.js";
 export { resolveExpression } from "./expressions/resolveExpression.js";
+
+// Selectors
+export type {
+  ResolvedDependencySelector,
+  SelectorResolutionErrorReason,
+  SelectorResolutionError,
+  SelectorResolutionResult,
+  ResolveDependencySelectorArgs,
+  ResolveDependencySelectorsArgs,
+} from "./selectors/types.js";
+export { resolveSelectorWhere } from "./selectors/resolveSelectorWhere.js";
+export { resolveDependencySelector } from "./selectors/resolveDependencySelector.js";
+export { resolveDependencySelectors } from "./selectors/resolveDependencySelectors.js";
+
 
