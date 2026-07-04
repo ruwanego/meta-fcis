@@ -1,20 +1,20 @@
-export interface Intent {
-  name: string;
-  payload?: unknown;
-}
+export type EntityMutationOperation = "CREATE" | "UPDATE" | "DELETE";
 
-export type MetaInstructionOperation = "CREATE" | "UPDATE" | "DELETE";
-
-export interface MetaInstruction {
-  type: string;
+export interface MutateEntityInstruction {
+  type: "MUTATE_ENTITY";
   meta: {
-    entityName?: string;
-    operation?: MetaInstructionOperation | string;
+    entityName: string;
+    operation: EntityMutationOperation;
     targetId?: string;
   };
-  payload: unknown;
+  payload: Record<string, unknown>;
 }
 
-export interface IntentSet {
-  intents: Array<Intent | MetaInstruction>;
+export type MetaInstruction = MutateEntityInstruction;
+
+export interface IntentSet<TResponse = unknown> {
+  success: boolean;
+  httpStatus: number;
+  responsePayload: TResponse;
+  intents: MetaInstruction[];
 }

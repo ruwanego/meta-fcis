@@ -26,9 +26,9 @@ export interface EntityDefinition {
 export interface AllowedIntentDefinition {
   type: "MUTATE_ENTITY";
   entity: string;
-  operation: IntentOperation | string;
+  operation: IntentOperation;
   fields: string[];
-  targetId?: unknown;
+  targetId?: string;
 }
 
 export interface RouteDefinition {
@@ -44,7 +44,7 @@ export interface RouteDefinition {
     function: string;
   };
   dependencies?: Record<string, DependencyConfig | DependencySelector>;
-  allowedIntents?: AllowedIntentDefinition[];
+  allowedIntents: AllowedIntentDefinition[];
 }
 
 export interface RouteConfig extends RouteDefinition {

@@ -75,7 +75,7 @@ function authorizeTarget(args: {
 }
 
 function authorizeCreate(args: {
-  intentMeta: Record<string, unknown>;
+  intentMeta: AuthorizeIntentArgs["intent"]["meta"];
   entity: EntityDefinition;
   entityName: string;
   payload: Record<string, unknown>;
@@ -137,7 +137,7 @@ function authorizeCreate(args: {
 }
 
 function authorizeUpdate(args: {
-  targetId: unknown;
+  targetId: string | undefined;
   entity: EntityDefinition;
   entityName: string;
   payload: Record<string, unknown>;
@@ -203,7 +203,7 @@ function authorizeUpdate(args: {
 }
 
 function authorizeDelete(args: {
-  targetId: unknown;
+  targetId: string | undefined;
   entity: EntityDefinition;
   entityName: string;
   payload: Record<string, unknown>;
@@ -257,20 +257,19 @@ export function authorizeIntent(args: AuthorizeIntentArgs): IntentAuthorizationR
     });
   }
 
-  const intentMeta = isPlainObject(intent.meta) ? intent.meta : {};
-  const entityName = typeof intentMeta.entityName === "string" ? intentMeta.entityName : undefined;
-  const entity = entityName ? graph.entities?.[entityName] : undefined;
+  const intentMeta = intent.meta;
+  const entityName = intentMeta.entityName;
+  const operation = intentMeta.operation;
+  const entity = graph.entities?.[entityName];
 
-  if (!entity || !entityName) {
+  if (!entity) {
     return failure({
       reason: "INTENT_ENTITY_UNKNOWN",
       entityName,
     });
   }
 
-  const operation = typeof intentMeta.operation === "string" ? intentMeta.operation : undefined;
-
-  if (!operation || !supportedOperations.has(operation)) {
+  if (!supportedOperations.has(operation)) {
     return failure({
       reason: "INTENT_OPERATION_INVALID",
       entityName,
@@ -286,7 +285,7 @@ export function authorizeIntent(args: AuthorizeIntentArgs): IntentAuthorizationR
     });
   }
 
-  const candidates = (route.allowedIntents ?? []).filter(
+  const candidates = route.allowedIntents.filter(
     (allowedIntent) =>
       allowedIntent.type === "MUTATE_ENTITY" &&
       allowedIntent.entity === entityName &&

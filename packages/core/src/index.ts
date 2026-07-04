@@ -1,7 +1,12 @@
 // Protocol
 export type { Actor } from "./protocol/actor.js";
 export type { ContextBundle } from "./protocol/context.js";
-export type { Intent, IntentSet, MetaInstruction, MetaInstructionOperation } from "./protocol/intent.js";
+export type {
+  EntityMutationOperation,
+  MutateEntityInstruction,
+  MetaInstruction,
+  IntentSet,
+} from "./protocol/intent.js";
 export type { Request } from "./protocol/request.js";
 export type { ExecuteRouteResult } from "./protocol/response.js";
 
