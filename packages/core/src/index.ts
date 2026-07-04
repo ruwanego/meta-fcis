@@ -92,3 +92,17 @@ export type {
 } from "./intents/types.js";
 export { authorizeIntent } from "./intents/authorizeIntent.js";
 export { authorizeIntentSet } from "./intents/authorizeIntentSet.js";
+
+// Transactions
+export type {
+  TransactionOperationKind,
+  CreateOperation,
+  UpdateOperation,
+  DeleteOperation,
+  TransactionOperation,
+  TransactionPlan,
+  TransactionPlanErrorReason,
+  TransactionPlanError,
+  TransactionPlanResult,
+} from "./transactions/types.js";
+export { buildTransactionPlan } from "./transactions/buildTransactionPlan.js";
