@@ -42,7 +42,7 @@ Pure functions own domain decisions.
 Current milestone:
 
 ```txt
-Milestone 0: @meta-fcis/core skeleton
+Milestone 2: core expression resolver
 ```
 
 Build only:
@@ -55,6 +55,7 @@ RuntimeError
 validateGraph
 validateIntentSet
 executeRoute skeleton
+expression resolver
 ```
 
 Do not build future milestones.
@@ -84,6 +85,9 @@ meta-fcis/
     core/
       package.json
       tsconfig.json
+      scripts/
+        smoke.mjs
+        expression-smoke.mjs
       src/
         index.ts
 
@@ -107,6 +111,11 @@ meta-fcis/
         pipeline/
           executeRoute.ts
           validateIntentSet.ts
+
+        expressions/
+          types.ts
+          resolvePath.ts
+          resolveExpression.ts
 ```
 
 Do not invent extra packages yet.
@@ -443,7 +452,7 @@ Do not add future features.
 
 ## 13. Required Files for @meta-fcis/core
 
-Create exactly these files for Milestone 0:
+Create exactly these files for Milestone 0 and Milestone 2:
 
 ```txt
 packages/core/package.json
@@ -460,6 +469,9 @@ packages/core/src/adapters/types.ts
 packages/core/src/errors/RuntimeError.ts
 packages/core/src/pipeline/executeRoute.ts
 packages/core/src/pipeline/validateIntentSet.ts
+packages/core/src/expressions/types.ts
+packages/core/src/expressions/resolvePath.ts
+packages/core/src/expressions/resolveExpression.ts
 ```
 
 Do not add more unless required for compilation.
