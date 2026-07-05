@@ -4,7 +4,7 @@ All notable changes to this repository will be documented in this file.
 
 Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 
-## 0.1.0 - Unreleased
+## 0.1.0 - 2026-07-05
 
 ### Added
 
