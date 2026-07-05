@@ -4,6 +4,14 @@ All notable changes to this repository will be documented in this file.
 
 Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 
+## Unreleased
+
+### Added
+
+- `loadGraph(input)` in `@meta-fcis/core`: accepts a graph object or JSON string, validates it, and enforces `engineCompatibility.min/max` against the engine version.
+- `ENGINE_VERSION` constant, smoke-verified against the core package version.
+- `GRAPH_INCOMPATIBLE` runtime error code for engine version range failures.
+
 ## 0.1.0 - 2026-07-05
 
 ### Added

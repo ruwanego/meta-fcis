@@ -102,12 +102,18 @@ Milestone 11:
 - opt-in shell execution step via caller-supplied executor
 - fake in-memory executor in the basic example
 - core pipeline still never executes
+
+Milestone 12:
+- loadGraph entry point (object or JSON string)
+- ENGINE_VERSION constant, smoke-checked against package.json
+- engineCompatibility min/max enforcement with GRAPH_INCOMPATIBLE
+- validateGraph and executeRoute unchanged
 ```
 
 Current status:
 
 ```txt
-Current status: @meta-fcis/core semantic functions completed through Milestone 8, plus the Milestone 11 TransactionExecutor contract. @meta-fcis/shell runtime completed through Milestone 11 (opt-in execution via caller-supplied executor). Basic in-memory example completed through Milestone 11.
+Current status: @meta-fcis/core semantic functions completed through Milestone 8, plus the Milestone 11 TransactionExecutor contract and Milestone 12 graph loading. @meta-fcis/shell runtime completed through Milestone 11 (opt-in execution via caller-supplied executor). Basic in-memory example completed through Milestone 11.
 Next milestone must be explicitly requested (see ROADMAP.md).
 ```
 

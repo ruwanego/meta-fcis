@@ -27,6 +27,7 @@ pure.ts = deterministic business decision logic
 - transaction plan building
 - `executeRoute` semantic pipeline wiring
 - `TransactionExecutor` adapter contract (Milestone 11; contract only, never invoked by core)
+- `loadGraph` entry point with engine compatibility enforcement (Milestone 12)
 
 The core builds transaction plans but does not execute transactions.
 
@@ -151,9 +152,11 @@ The package entrypoint is:
 ```ts
 import {
   executeRoute,
+  loadGraph,
   validateGraph,
   validateIntentSet,
   RuntimeError,
+  ENGINE_VERSION,
 } from "@meta-fcis/core";
 ```
 
