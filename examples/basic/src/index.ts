@@ -1,4 +1,5 @@
 import { createShellRuntime } from "@meta-fcis/shell";
+import type { TransactionExecutor, TransactionOperationResult } from "@meta-fcis/core";
 
 const tasks = new Map<string, {
   id: string;
@@ -127,8 +128,36 @@ const graph = {
   },
 };
 
+// ponytail: example executor handles UPDATE only — the one op this graph can emit
+const transactionExecutor: TransactionExecutor = {
+  execute(plan) {
+    const operations: TransactionOperationResult[] = plan.operations.map((op) => {
+      if (op.kind !== "UPDATE") {
+        throw new Error(`Example executor only supports UPDATE, got ${op.kind}`);
+      }
+
+      const existing = tasks.get(op.targetId);
+      if (!existing) {
+        throw new Error(`Task not found: ${op.targetId}`);
+      }
+
+      tasks.set(op.targetId, { ...existing, ...op.payload } as typeof existing);
+
+      return {
+        kind: op.kind,
+        entity: op.entity,
+        targetId: op.targetId,
+        outcome: "applied",
+      };
+    });
+
+    return { operations };
+  },
+};
+
 const runtime = createShellRuntime({
   graph,
+  transactionExecutor,
   adapters: {
     schema: {
       validate(schema, payload) {
@@ -227,10 +256,20 @@ const result = await runtime.runRoute({
 });
 
 if (!result.ok) {
-  console.error(JSON.stringify(result.error, null, 2));
-} else {
-  console.log(JSON.stringify({
-    responsePayload: result.value.intentSet.responsePayload,
-    transactionPlan: result.value.transactionPlan,
-  }, null, 2));
+  throw new Error(`Route failed: ${JSON.stringify(result.error, null, 2)}`);
+}
+
+console.log(JSON.stringify({
+  responsePayload: result.value.intentSet.responsePayload,
+  transactionPlan: result.value.transactionPlan,
+  execution: result.value.execution,
+}, null, 2));
+
+// Smoke self-check: the executor must have applied the plan
+if (result.value.execution?.operations[0]?.outcome !== "applied") {
+  throw new Error("Expected execution result with applied outcome");
+}
+
+if (tasks.get("task-1")?.isCompleted !== true) {
+  throw new Error("Expected task-1 to be completed by the executor");
 }
