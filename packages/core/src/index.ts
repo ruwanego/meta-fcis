@@ -17,6 +17,8 @@ export type {
   AppGraph,
   FieldType,
   FieldDefinition,
+  ModelFieldDefinition,
+  ModelDefinition,
   EntityDefinition,
   EntityDeletePolicy,
   AllowedIntentDefinition,

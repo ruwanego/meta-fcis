@@ -26,6 +26,15 @@ export interface AllowedIntentDefinition {
   targetId?: string;
 }
 
+export interface ModelFieldDefinition {
+  type: FieldType;
+  required: boolean;
+}
+
+export interface ModelDefinition {
+  fields: Record<string, ModelFieldDefinition>;
+}
+
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export interface RouteTransportDefinition {
@@ -68,7 +77,7 @@ export interface AppGraph {
     max: string;
   };
   entities: Record<string, EntityDefinition>;
-  models: Record<string, unknown>;
+  models: Record<string, ModelDefinition>;
   plugins?: Record<string, unknown>;
   routes: Record<string, RouteConfig>;
 }
