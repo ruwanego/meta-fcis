@@ -9,5 +9,6 @@ export type {
   ShellRunRouteArgs,
   ShellErrorCode,
   ShellError,
+  ShellRouteSuccess,
   ShellRouteResult,
 } from "./types.js";
