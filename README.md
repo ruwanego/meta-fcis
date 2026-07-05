@@ -2,7 +2,7 @@
 
 Meta-FCIS is a graph-centered, plugin-driven, LLM-safe application engine.
 
-The current repository contains the semantic core, a plain runtime shell scaffold, and a basic in-memory example. It is not a web framework, HTTP server, database layer, plugin package, or code generator.
+The current repository contains the semantic core, a plain runtime shell scaffold, plugin packages for persistence, schema validation, and HTTP transport, and a basic in-memory example. The core is not a web framework, HTTP server, database layer, or code generator — mechanisms live in plugins.
 
 ```txt
 app-graph.json = application contract
@@ -28,6 +28,8 @@ pure.ts = deterministic business decision logic
 - `executeRoute` semantic pipeline wiring
 - `TransactionExecutor` adapter contract (Milestone 11; contract only, never invoked by core)
 - `loadGraph` entry point with engine compatibility enforcement (Milestone 12)
+- typed route `transport` blocks with validated HTTP methods (Milestone 14)
+- typed graph model definitions (Milestone 15)
 
 The core builds transaction plans but does not execute transactions.
 
@@ -47,6 +49,20 @@ The core builds transaction plans but does not execute transactions.
 - atomic transaction executor over the same store; CREATE results report generated ids
 - memory only — no files, database, or network
 
+`@meta-fcis/plugin-schema` is complete through Milestone 15:
+
+- model-driven `SchemaAdapter` interpreting the graph's own `models` declarations
+- required fields, closed type set, undeclared payload fields rejected
+- aggregate errors naming every failing field, surfaced as `REQUEST_VALIDATION_FAILED` (400)
+- zero runtime dependencies
+
+`@meta-fcis/plugin-transport-http` is complete through Milestone 14:
+
+- serves a shell runtime over `node:http` (the only package allowed to know HTTP)
+- maps HTTP requests to core `Request`s; engine-decided error statuses pass through unchanged
+- enforces route-declared `transport.method` (405), rejects malformed JSON (400), contains handler crashes (500)
+- never imports the shell — the `runRoute` handler is injected
+
 `@meta-fcis/example-basic` is complete through Milestone 13:
 
 - builds an in-memory graph and loads it through `loadGraph`
@@ -55,7 +71,7 @@ The core builds transaction plans but does not execute transactions.
 - invokes the shell runtime
 - prints the response payload, transaction plan, and execution result
 
-The next semantic milestone must be explicitly requested before implementation.
+All work flows through the OpenSpec workflow (`openspec/specs/` is the source of truth; see [AGENTS.md](./AGENTS.md) and [ROADMAP.md](./ROADMAP.md)). The next milestone must go through a proposed change before implementation.
 
 ## Package Boundaries
 
@@ -114,9 +130,19 @@ packages/shell/
   scripts/
     smoke.mjs
 
+packages/plugin-persistence-memory/
+packages/plugin-schema/
+packages/plugin-transport-http/
+  src/          (Config -> Adapter factory)
+  scripts/      (smoke.mjs)
+
 examples/basic/
   src/
     index.ts
+
+openspec/
+  specs/        (baseline capability specs — source of truth)
+  changes/      (active and archived OpenSpec changes)
 ```
 
 ## Development
@@ -172,6 +198,14 @@ The shell package entrypoint is:
 
 ```ts
 import { createShellRuntime } from "@meta-fcis/shell";
+```
+
+Plugin entrypoints:
+
+```ts
+import { createMemoryPersistence } from "@meta-fcis/plugin-persistence-memory";
+import { createModelSchema } from "@meta-fcis/plugin-schema";
+import { createHttpTransport } from "@meta-fcis/plugin-transport-http";
 ```
 
 The published surface is `dist/index.js` and `dist/index.d.ts`.
