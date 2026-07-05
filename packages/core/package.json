@@ -2,7 +2,7 @@
   "name": "@meta-fcis/core",
   "version": "0.1.0",
   "description": "Runtime-agnostic semantic core for Meta-FCIS application graphs.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,7 +14,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "sideEffects": false,
   "repository": {

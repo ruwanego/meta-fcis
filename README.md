@@ -126,6 +126,8 @@ The published surface is `dist/index.js` and `dist/index.d.ts`.
 
 ## Release Notes
 
-This package is currently `0.1.0` and marked `UNLICENSED`. Choose a license before any public release intended for third-party reuse.
+This repository and `@meta-fcis/core` are licensed under MIT.
+
+The current release track is package-scoped prereleases for `@meta-fcis/core`. See [RELEASE.md](./RELEASE.md) for the release process.
 
 No runtime dependencies are allowed in `@meta-fcis/core`.

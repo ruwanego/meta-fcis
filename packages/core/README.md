@@ -29,4 +29,4 @@ pnpm smoke
 
 Current semantic implementation is complete through Milestone 8. Future milestones require explicit request before implementation.
 
-This package is currently `UNLICENSED`; choose a license before a public release intended for third-party reuse.
+This package is licensed under MIT.

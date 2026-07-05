@@ -2,7 +2,7 @@
   "name": "meta-fcis",
   "private": true,
   "description": "Graph-centered, plugin-driven, LLM-safe application engine workspace.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@11.9.0",
   "repository": {
@@ -16,7 +16,8 @@
   "scripts": {
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
-    "smoke": "pnpm --filter @meta-fcis/core smoke && pnpm --filter @meta-fcis/core smoke:expressions && pnpm --filter @meta-fcis/core smoke:selectors && pnpm --filter @meta-fcis/core smoke:policies && pnpm --filter @meta-fcis/core smoke:intents && pnpm --filter @meta-fcis/core smoke:transactions && pnpm --filter @meta-fcis/core smoke:graph"
+    "smoke": "pnpm --filter @meta-fcis/core smoke && pnpm --filter @meta-fcis/core smoke:expressions && pnpm --filter @meta-fcis/core smoke:selectors && pnpm --filter @meta-fcis/core smoke:policies && pnpm --filter @meta-fcis/core smoke:intents && pnpm --filter @meta-fcis/core smoke:transactions && pnpm --filter @meta-fcis/core smoke:graph",
+    "pack:core": "pnpm --filter @meta-fcis/core pack --dry-run"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

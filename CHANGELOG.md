@@ -2,7 +2,7 @@
 
 All notable changes to this repository will be documented in this file.
 
-This project does not have a public release process yet.
+Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 
 ## 0.1.0 - Unreleased
 
