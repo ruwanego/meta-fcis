@@ -244,4 +244,14 @@ assertGraphInvalid("Q. limit zero fails", (graph) => {
   graph.routes["Tasks.complete"].dependencies.targetTask.limit = 0;
 });
 
+assertGraphInvalid("R. transport method outside closed set fails", (graph) => {
+  graph.routes["Tasks.complete"].transport.method = "FETCH";
+});
+
+{
+  const graph = clone(validGraph);
+  delete graph.routes["Tasks.complete"].transport;
+  validateGraph(graph); // S. transport omitted stays valid
+}
+
 console.log("Graph validator smoke verification passed.");

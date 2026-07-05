@@ -171,7 +171,14 @@ function validateTransport(route: Record<string, unknown>, routePath: string): v
   if (transport.kind !== "http") {
     invalid(`${routePath}.transport.kind`, `${routePath}.transport.kind must be http`, transport.kind);
   }
-  requireNonEmptyString(transport.method, `${routePath}.transport.method`);
+  const method = requireNonEmptyString(transport.method, `${routePath}.transport.method`);
+  if (!["GET", "POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+    invalid(
+      `${routePath}.transport.method`,
+      `${routePath}.transport.method must be one of GET, POST, PUT, PATCH, DELETE`,
+      method
+    );
+  }
   requireNonEmptyString(transport.path, `${routePath}.transport.path`);
 }
 
