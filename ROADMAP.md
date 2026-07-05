@@ -9,30 +9,27 @@ without going through a proposed and approved change first (see AGENTS.md 2.1).
 
 Done (baseline, specced in `openspec/specs/`): Milestones 0–10 — core semantic
 pipeline through transaction planning, plain shell runtime, in-memory example.
+Milestone 11 (`transaction-execution-boundary`) shipped 2026-07-05; archived at
+`openspec/changes/archive/2026-07-05-transaction-execution-boundary/`.
 
 ## Next up
 
-1. **transaction-execution-boundary** (M11)
-   Core-owned `TransactionExecutor` adapter interface; shell gains an opt-in
-   step that hands the plan to the executor. Core still never executes —
-   execution is a mechanism behind an adapter. Example gets an in-memory executor.
-
-2. **graph-loading** (M12)
+1. **graph-loading** (M12)
    Load and validate `app-graph.json` from a caller-supplied object or string;
    engine compatibility (`engineCompatibility.min/max`) enforcement.
 
 ## Later (order tentative)
 
-3. **plugin-persistence-memory** — first real plugin package: in-memory
+2. **plugin-persistence-memory** — first real plugin package: in-memory
    persistence adapter implementing selector semantics (where/cardinality/
    limit/orderBy/onMissing) honestly.
-4. **plugin-schema** — schema validation plugin wrapping a real validator
+3. **plugin-schema** — schema validation plugin wrapping a real validator
    (outside core; core keeps only the adapter interface).
-5. **plugin-auth** — auth plugin (e.g. token → actor) behind the auth adapter.
-6. **plugin-transport-http** — HTTP transport plugin that maps requests to the
+4. **plugin-auth** — auth plugin (e.g. token → actor) behind the auth adapter.
+5. **plugin-transport-http** — HTTP transport plugin that maps requests to the
    shell and `RuntimeError` codes/status to HTTP responses. First package
    allowed to know HTTP; core and shell stay transport-free.
-7. **e2e-example** — example app wiring transport + schema + auth +
+6. **e2e-example** — example app wiring transport + schema + auth +
    persistence + executor plugins end to end.
 
 ## Explicit non-goals (unchanged from AGENTS.md)
