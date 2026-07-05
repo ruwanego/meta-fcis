@@ -1,0 +1,48 @@
+{
+  "name": "@meta-fcis/plugin-schema",
+  "version": "0.1.0",
+  "description": "Model-driven schema validation plugin for Meta-FCIS: interprets graph model definitions.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruwanego/meta-fcis.git",
+    "directory": "packages/plugin-schema"
+  },
+  "bugs": {
+    "url": "https://github.com/ruwanego/meta-fcis/issues"
+  },
+  "homepage": "https://github.com/ruwanego/meta-fcis#readme",
+  "keywords": [
+    "meta-fcis",
+    "schema",
+    "validation",
+    "plugin"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "smoke": "pnpm build && node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@meta-fcis/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@meta-fcis/plugin-persistence-memory": "workspace:*",
+    "@meta-fcis/shell": "workspace:*"
+  }
+}

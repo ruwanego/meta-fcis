@@ -32,6 +32,19 @@ importers:
         specifier: workspace:*
         version: link:../core
 
+  packages/plugin-schema:
+    dependencies:
+      '@meta-fcis/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@meta-fcis/plugin-persistence-memory':
+        specifier: workspace:*
+        version: link:../plugin-persistence-memory
+      '@meta-fcis/shell':
+        specifier: workspace:*
+        version: link:../shell
+
   packages/plugin-transport-http:
     dependencies:
       '@meta-fcis/core':
