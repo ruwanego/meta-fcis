@@ -26,24 +26,25 @@ pure.ts = deterministic business decision logic
 - intent authorization
 - transaction plan building
 - `executeRoute` semantic pipeline wiring
+- `TransactionExecutor` adapter contract (Milestone 11; contract only, never invoked by core)
 
 The core builds transaction plans but does not execute transactions.
 
-`@meta-fcis/shell` is complete through Milestone 9:
+`@meta-fcis/shell` is complete through Milestone 11:
 
 - accepts a graph supplied by the caller
 - accepts runtime adapters supplied by the caller
 - delegates route execution to core
 - converts core `RuntimeError` failures into shell result objects
-- does not serve HTTP, open sockets, load plugins, connect to databases, or execute transactions
+- optionally executes the transaction plan through a caller-supplied `TransactionExecutor` (never directly)
+- does not serve HTTP, open sockets, load plugins, or connect to databases
 
-`@meta-fcis/example-basic` is complete through Milestone 10:
+`@meta-fcis/example-basic` is complete through Milestone 11:
 
 - builds an in-memory graph
-- provides fake adapters
+- provides fake adapters and a fake in-memory transaction executor
 - invokes the shell runtime
-- prints the response payload and transaction plan
-- does not execute the transaction plan
+- prints the response payload, transaction plan, and execution result
 
 The next semantic milestone must be explicitly requested before implementation.
 
