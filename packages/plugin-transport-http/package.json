@@ -1,0 +1,49 @@
+{
+  "name": "@meta-fcis/plugin-transport-http",
+  "version": "0.1.0",
+  "description": "HTTP transport plugin for Meta-FCIS: serves a shell runtime over node:http.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruwanego/meta-fcis.git",
+    "directory": "packages/plugin-transport-http"
+  },
+  "bugs": {
+    "url": "https://github.com/ruwanego/meta-fcis/issues"
+  },
+  "homepage": "https://github.com/ruwanego/meta-fcis#readme",
+  "keywords": [
+    "meta-fcis",
+    "http",
+    "transport",
+    "plugin"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "smoke": "pnpm build && node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@meta-fcis/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@meta-fcis/plugin-persistence-memory": "workspace:*",
+    "@meta-fcis/shell": "workspace:*"
+  }
+}

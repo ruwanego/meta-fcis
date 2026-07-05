@@ -26,7 +26,16 @@ export interface AllowedIntentDefinition {
   targetId?: string;
 }
 
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+
+export interface RouteTransportDefinition {
+  kind: "http";
+  method: HttpMethod;
+  path: string;
+}
+
 export interface RouteDefinition {
+  transport?: RouteTransportDefinition;
   auth: {
     required: boolean;
     roles?: string[];
