@@ -25,17 +25,19 @@ now curl-able; route `transport.method` is typed and enforced at the edge.
 Milestone 15 (`plugin-schema`) shipped 2026-07-05; archived at
 `openspec/changes/archive/2026-07-05-plugin-schema/`. Graph models are the
 schema language — zero-dep interpreter, no external validator.
+Milestone 16 (`plugin-auth`) shipped 2026-07-05; archived at
+`openspec/changes/archive/2026-07-05-plugin-auth/`. All four adapter slots
+now have real plugins; only the example still uses fakes.
 
 ## Next up
 
-1. **plugin-auth** (M16) — auth plugin (e.g. token → actor) behind the auth
-   adapter.
+1. **e2e-example** (M17) — example app wiring transport + schema + auth +
+   persistence + executor plugins end to end. Milestone for a `0.2.0` release
+   line across packages.
 
 ## Later (order tentative)
 
-2. **e2e-example** — example app wiring transport + schema + auth +
-   persistence + executor plugins end to end. Milestone for a `0.2.0` release
-   line across packages.
+_Empty — propose new direction after the 0.2.0 line._
 
 ## Explicit non-goals (unchanged from AGENTS.md)
 

@@ -8,6 +8,8 @@ Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 
 ### Added
 
+- `@meta-fcis/plugin-auth`: token-registry authentication plugin — bearer tokens resolved to actors, required/optional route semantics with an anonymous actor, role enforcement; failures surface as `AUTHENTICATION_FAILED` (401) while route policies keep owning 403.
+
 - `@meta-fcis/plugin-schema`: model-driven schema validation plugin — interprets graph `models` (required fields, closed type set, undeclared fields rejected, aggregate error messages) with zero runtime dependencies; failures surface as `REQUEST_VALIDATION_FAILED` (400).
 - `AppGraph.models` is now typed (`ModelDefinition` / `ModelFieldDefinition`); typing only, validation unchanged.
 

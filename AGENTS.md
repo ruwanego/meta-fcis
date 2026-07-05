@@ -57,6 +57,7 @@ npx gitnexus@latest analyze && npx gitnexus@latest setup
 
 pnpm workspace, root `package.json` is private and manages packages only:
 `packages/core` (`@meta-fcis/core`), `packages/shell` (`@meta-fcis/shell`),
+`packages/plugin-auth` (`@meta-fcis/plugin-auth`),
 `packages/plugin-persistence-memory` (`@meta-fcis/plugin-persistence-memory`),
 `packages/plugin-schema` (`@meta-fcis/plugin-schema`),
 `packages/plugin-transport-http` (`@meta-fcis/plugin-transport-http`),
