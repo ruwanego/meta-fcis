@@ -3,11 +3,14 @@ import type {
   Request,
   RuntimeAdapters,
   RuntimeErrorCode,
+  TransactionExecutionResult,
+  TransactionExecutor,
 } from "@meta-fcis/core";
 
 export interface ShellRuntimeConfig {
   graph: unknown;
   adapters: RuntimeAdapters;
+  transactionExecutor?: TransactionExecutor;
 }
 
 export interface ShellRuntime {
@@ -27,10 +30,14 @@ export interface ShellError {
   details?: unknown;
 }
 
+export interface ShellRouteSuccess extends ExecuteRouteResult {
+  execution?: TransactionExecutionResult;
+}
+
 export type ShellRouteResult =
   | {
       ok: true;
-      value: ExecuteRouteResult;
+      value: ShellRouteSuccess;
     }
   | {
       ok: false;
