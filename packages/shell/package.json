@@ -1,0 +1,43 @@
+{
+  "name": "@meta-fcis/shell",
+  "version": "0.1.0",
+  "description": "Plain runtime shell boundary for Meta-FCIS core execution.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruwanego/meta-fcis.git",
+    "directory": "packages/shell"
+  },
+  "bugs": {
+    "url": "https://github.com/ruwanego/meta-fcis/issues"
+  },
+  "homepage": "https://github.com/ruwanego/meta-fcis#readme",
+  "keywords": [
+    "application-graph",
+    "runtime-shell",
+    "meta-fcis"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "smoke": "pnpm build && node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@meta-fcis/core": "workspace:*"
+  }
+}

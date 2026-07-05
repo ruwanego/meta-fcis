@@ -1,16 +1,19 @@
 # Release Process
 
-Meta-FCIS is a monorepo, but the only releasable package today is `@meta-fcis/core`.
+Meta-FCIS is a monorepo. The releasable packages today are:
+
+- `@meta-fcis/core`
+- `@meta-fcis/shell`
 
 The appropriate release model at this stage is package-scoped prereleases:
 
-- release `@meta-fcis/core` independently
-- use SemVer from `packages/core/package.json`
-- create GitHub tags as `core-vX.Y.Z`
-- title GitHub releases as `@meta-fcis/core vX.Y.Z`
+- release packages independently
+- use SemVer from each package's `package.json`
+- create GitHub tags as `<package>-vX.Y.Z`, such as `core-vX.Y.Z` or `shell-vX.Y.Z`
+- title GitHub releases as `@meta-fcis/<package> vX.Y.Z`
 - publish to npm only when explicitly requested
 
-This keeps the semantic core releaseable without implying that shells, plugins, examples, or framework integrations exist.
+This keeps each package releaseable without implying that plugins, examples, HTTP servers, or framework integrations exist.
 
 ## Before Release
 
@@ -21,6 +24,7 @@ pnpm build
 pnpm typecheck
 pnpm smoke
 pnpm pack:core
+pnpm pack:shell
 ```
 
 Confirm:
@@ -28,7 +32,7 @@ Confirm:
 - the working tree is clean
 - GitHub Actions is passing on `main`
 - `CHANGELOG.md` has a dated entry for the version
-- `packages/core/package.json` has the intended version
+- the relevant package `package.json` has the intended version
 - `@meta-fcis/core` still has no runtime dependencies
 
 ## GitHub Release
@@ -42,6 +46,8 @@ gh release create core-vX.Y.Z --title "@meta-fcis/core vX.Y.Z" --notes-file CHAN
 ```
 
 Use GitHub releases as the source release record.
+
+For `@meta-fcis/shell` version `X.Y.Z`, use the same pattern with `shell-vX.Y.Z`.
 
 ## npm Publishing
 

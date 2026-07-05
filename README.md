@@ -2,7 +2,7 @@
 
 Meta-FCIS is a graph-centered, plugin-driven, LLM-safe application engine.
 
-The current repository contains the semantic core only. It is not a web framework, HTTP server, database layer, plugin package, or code generator.
+The current repository contains the semantic core and a plain runtime shell scaffold. It is not a web framework, HTTP server, database layer, plugin package, or code generator.
 
 ```txt
 app-graph.json = application contract
@@ -28,6 +28,14 @@ pure.ts = deterministic business decision logic
 - `executeRoute` semantic pipeline wiring
 
 The core builds transaction plans but does not execute transactions.
+
+`@meta-fcis/shell` is complete through Milestone 9:
+
+- accepts a graph supplied by the caller
+- accepts runtime adapters supplied by the caller
+- delegates route execution to core
+- converts core `RuntimeError` failures into shell result objects
+- does not serve HTTP, open sockets, load plugins, connect to databases, or execute transactions
 
 The next semantic milestone must be explicitly requested before implementation.
 
@@ -79,6 +87,14 @@ packages/core/
     intent-smoke.mjs
     transaction-smoke.mjs
     graph-smoke.mjs
+
+packages/shell/
+  src/
+    createShellRuntime.ts
+    index.ts
+    types.ts
+  scripts/
+    smoke.mjs
 ```
 
 ## Development
@@ -122,12 +138,18 @@ import {
 } from "@meta-fcis/core";
 ```
 
+The shell package entrypoint is:
+
+```ts
+import { createShellRuntime } from "@meta-fcis/shell";
+```
+
 The published surface is `dist/index.js` and `dist/index.d.ts`.
 
 ## Release Notes
 
 This repository and `@meta-fcis/core` are licensed under MIT.
 
-The current release track is package-scoped prereleases for `@meta-fcis/core`. See [RELEASE.md](./RELEASE.md) for the release process.
+The current release track is package-scoped prereleases for `@meta-fcis/core` and `@meta-fcis/shell`. See [RELEASE.md](./RELEASE.md) for the release process.
 
 No runtime dependencies are allowed in `@meta-fcis/core`.

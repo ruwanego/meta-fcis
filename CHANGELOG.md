@@ -21,6 +21,7 @@ Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 - `executeRoute` semantic pipeline wiring.
 - Core smoke verification scripts.
 - GitHub Actions CI for build, typecheck, and smoke verification.
+- `@meta-fcis/shell` plain runtime shell scaffold.
 
 ### Changed
 

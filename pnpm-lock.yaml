@@ -14,6 +14,12 @@ importers:
 
   packages/core: {}
 
+  packages/shell:
+    dependencies:
+      '@meta-fcis/core':
+        specifier: workspace:*
+        version: link:../core
+
 packages:
 
   typescript@6.0.3:

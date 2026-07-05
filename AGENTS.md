@@ -78,12 +78,21 @@ Milestone 8:
 - intent authorization
 - transaction planning
 - no transaction execution
+
+Milestone 9:
+- plain runtime shell scaffold
+- shell-owned result boundary
+- shell delegates route execution to core
+- no HTTP server
+- no framework shell
+- no real plugins
+- no transaction execution
 ```
 
 Current status:
 
 ```txt
-Current status: @meta-fcis/core semantic functions completed through Milestone 8, with RuntimeError and IntentSet contract fixes applied.
+Current status: @meta-fcis/core semantic functions completed through Milestone 8, with RuntimeError and IntentSet contract fixes applied. @meta-fcis/shell plain runtime scaffold completed through Milestone 9.
 Next milestone must be explicitly requested.
 ```
 
@@ -170,11 +179,23 @@ meta-fcis/
         transactions/
           types.ts
           buildTransactionPlan.ts
+
+    shell/
+      package.json
+      tsconfig.json
+      README.md
+      LICENSE
+      scripts/
+        smoke.mjs
+      src/
+        index.ts
+        types.ts
+        createShellRuntime.ts
 ```
 
 Do not invent extra packages yet.
 
-Do not create `shell`.
+Do not create additional shell packages beyond `packages/shell` unless explicitly requested.
 
 Do not create plugins yet.
 
@@ -286,6 +307,17 @@ execute transactions
 compile TypeSpec
 serve HTTP
 generate clients
+```
+
+The current shell scaffold must not:
+
+```txt
+serve HTTP
+open sockets
+load plugins
+implement auth providers
+connect to databases
+execute transactions
 ```
 
 ---
@@ -497,6 +529,7 @@ Completed order:
 13. Transaction plan builder
 14. Strict graph validator
 15. Semantic pipeline wiring
+16. Plain runtime shell scaffold
 ```
 
 Future work requires explicit instruction.
@@ -553,6 +586,19 @@ packages/core/src/transactions/buildTransactionPlan.ts
 ```
 
 Do not add more unless required for compilation.
+
+Required files for Milestone 9:
+
+```txt
+packages/shell/package.json
+packages/shell/tsconfig.json
+packages/shell/README.md
+packages/shell/LICENSE
+packages/shell/scripts/smoke.mjs
+packages/shell/src/index.ts
+packages/shell/src/types.ts
+packages/shell/src/createShellRuntime.ts
+```
 
 ---
 
@@ -620,7 +666,7 @@ The implementation is wrong if any of these happen:
 [ ] Zod is installed
 [ ] SQL/ORM package is installed
 [ ] HTTP server is implemented
-[ ] shell package is created
+[ ] framework shell package is created
 [ ] plugin package is created
 [ ] core imports from shell
 [ ] core imports from plugin
