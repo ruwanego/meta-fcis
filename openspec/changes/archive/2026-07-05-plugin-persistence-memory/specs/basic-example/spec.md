@@ -1,10 +1,6 @@
-# Basic Example Specification
+# Basic Example Delta
 
-## Purpose
-
-`@meta-fcis/example-basic` demonstrates the full stack end-to-end in memory: a hand-built graph, fake adapters, and the shell runtime — proving the engine runs with zero infrastructure.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: In-memory demonstration
 

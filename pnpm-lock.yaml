@@ -17,11 +17,20 @@ importers:
       '@meta-fcis/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@meta-fcis/plugin-persistence-memory':
+        specifier: workspace:*
+        version: link:../../packages/plugin-persistence-memory
       '@meta-fcis/shell':
         specifier: workspace:*
         version: link:../../packages/shell
 
   packages/core: {}
+
+  packages/plugin-persistence-memory:
+    dependencies:
+      '@meta-fcis/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/shell:
     dependencies:

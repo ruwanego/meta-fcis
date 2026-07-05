@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@meta-fcis/core": "workspace:*",
+    "@meta-fcis/plugin-persistence-memory": "workspace:*",
     "@meta-fcis/shell": "workspace:*"
   }
 }

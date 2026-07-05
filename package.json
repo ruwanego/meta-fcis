@@ -16,7 +16,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
-    "smoke": "pnpm --filter @meta-fcis/core smoke && pnpm --filter @meta-fcis/core smoke:expressions && pnpm --filter @meta-fcis/core smoke:selectors && pnpm --filter @meta-fcis/core smoke:policies && pnpm --filter @meta-fcis/core smoke:intents && pnpm --filter @meta-fcis/core smoke:transactions && pnpm --filter @meta-fcis/core smoke:graph && pnpm --filter @meta-fcis/core smoke:load && pnpm --filter @meta-fcis/shell smoke && pnpm --filter @meta-fcis/example-basic smoke",
+    "smoke": "pnpm --filter @meta-fcis/core smoke && pnpm --filter @meta-fcis/core smoke:expressions && pnpm --filter @meta-fcis/core smoke:selectors && pnpm --filter @meta-fcis/core smoke:policies && pnpm --filter @meta-fcis/core smoke:intents && pnpm --filter @meta-fcis/core smoke:transactions && pnpm --filter @meta-fcis/core smoke:graph && pnpm --filter @meta-fcis/core smoke:load && pnpm --filter @meta-fcis/plugin-persistence-memory smoke && pnpm --filter @meta-fcis/shell smoke && pnpm --filter @meta-fcis/example-basic smoke",
     "pack:core": "pnpm --filter @meta-fcis/core pack --dry-run",
     "pack:shell": "pnpm --filter @meta-fcis/shell pack --dry-run"
   },

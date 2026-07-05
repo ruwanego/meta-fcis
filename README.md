@@ -40,10 +40,18 @@ The core builds transaction plans but does not execute transactions.
 - optionally executes the transaction plan through a caller-supplied `TransactionExecutor` (never directly)
 - does not serve HTTP, open sockets, load plugins, or connect to databases
 
-`@meta-fcis/example-basic` is complete through Milestone 11:
+`@meta-fcis/plugin-persistence-memory` is complete through Milestone 13:
 
-- builds an in-memory graph
-- provides fake adapters and a fake in-memory transaction executor
+- first real plugin package (`Config -> Adapter` factory)
+- in-memory persistence adapter with full resolved-selector semantics
+- atomic transaction executor over the same store; CREATE results report generated ids
+- memory only — no files, database, or network
+
+`@meta-fcis/example-basic` is complete through Milestone 13:
+
+- builds an in-memory graph and loads it through `loadGraph`
+- obtains persistence and execution from `@meta-fcis/plugin-persistence-memory`
+- provides fake schema/auth/pureInvoker adapters
 - invokes the shell runtime
 - prints the response payload, transaction plan, and execution result
 

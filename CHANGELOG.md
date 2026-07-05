@@ -8,6 +8,9 @@ Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 
 ### Added
 
+- `@meta-fcis/plugin-persistence-memory`: first real plugin package — in-memory persistence adapter with full resolved-selector semantics (where/orderBy/limit/project/cardinality/onMissing) and an atomic `TransactionExecutor` over the same store; CREATE results report generated ids.
+- `examples/basic` now runs on the plugin (and `loadGraph`) instead of hand-written persistence/executor fakes.
+
 - `loadGraph(input)` in `@meta-fcis/core`: accepts a graph object or JSON string, validates it, and enforces `engineCompatibility.min/max` against the engine version.
 - `ENGINE_VERSION` constant, smoke-verified against the core package version.
 - `GRAPH_INCOMPATIBLE` runtime error code for engine version range failures.

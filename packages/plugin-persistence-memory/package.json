@@ -1,0 +1,44 @@
+{
+  "name": "@meta-fcis/plugin-persistence-memory",
+  "version": "0.1.0",
+  "description": "In-memory persistence adapter and transaction executor plugin for Meta-FCIS.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruwanego/meta-fcis.git",
+    "directory": "packages/plugin-persistence-memory"
+  },
+  "bugs": {
+    "url": "https://github.com/ruwanego/meta-fcis/issues"
+  },
+  "homepage": "https://github.com/ruwanego/meta-fcis#readme",
+  "keywords": [
+    "meta-fcis",
+    "persistence",
+    "in-memory",
+    "plugin"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "smoke": "pnpm build && node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@meta-fcis/core": "workspace:*"
+  }
+}

@@ -1,22 +1,6 @@
+import { loadGraph } from "@meta-fcis/core";
 import { createShellRuntime } from "@meta-fcis/shell";
-import type { TransactionExecutor, TransactionOperationResult } from "@meta-fcis/core";
-
-const tasks = new Map<string, {
-  id: string;
-  title: string;
-  isCompleted: boolean;
-  userId: string;
-}>([
-  [
-    "task-1",
-    {
-      id: "task-1",
-      title: "Read the graph",
-      isCompleted: false,
-      userId: "user-1",
-    },
-  ],
-]);
+import { createMemoryPersistence } from "@meta-fcis/plugin-persistence-memory";
 
 const graph = {
   irVersion: "meta-fcis.graph.v1",
@@ -128,35 +112,24 @@ const graph = {
   },
 };
 
-// ponytail: example executor handles UPDATE only — the one op this graph can emit
-const transactionExecutor: TransactionExecutor = {
-  execute(plan) {
-    const operations: TransactionOperationResult[] = plan.operations.map((op) => {
-      if (op.kind !== "UPDATE") {
-        throw new Error(`Example executor only supports UPDATE, got ${op.kind}`);
-      }
+const appGraph = loadGraph(graph);
 
-      const existing = tasks.get(op.targetId);
-      if (!existing) {
-        throw new Error(`Task not found: ${op.targetId}`);
-      }
-
-      tasks.set(op.targetId, { ...existing, ...op.payload } as typeof existing);
-
-      return {
-        kind: op.kind,
-        entity: op.entity,
-        targetId: op.targetId,
-        outcome: "applied",
-      };
-    });
-
-    return { operations };
+const { persistence, transactionExecutor } = createMemoryPersistence({
+  graph: appGraph,
+  seed: {
+    Task: [
+      {
+        id: "task-1",
+        title: "Read the graph",
+        isCompleted: false,
+        userId: "user-1",
+      },
+    ],
   },
-};
+});
 
 const runtime = createShellRuntime({
-  graph,
+  graph: appGraph,
   transactionExecutor,
   adapters: {
     schema: {
@@ -186,17 +159,7 @@ const runtime = createShellRuntime({
         };
       },
     },
-    persistence: {
-      loadDependencies(selectors) {
-        const taskId = selectors.targetTask?.where.id;
-        const userId = selectors.targetTask?.where.userId;
-        const task = typeof taskId === "string" ? tasks.get(taskId) : undefined;
-
-        return {
-          targetTask: task?.userId === userId ? task : null,
-        };
-      },
-    },
+    persistence,
     pureInvoker: {
       invoke(functionName, context) {
         if (functionName !== "completeTask") {
@@ -270,6 +233,16 @@ if (result.value.execution?.operations[0]?.outcome !== "applied") {
   throw new Error("Expected execution result with applied outcome");
 }
 
-if (tasks.get("task-1")?.isCompleted !== true) {
-  throw new Error("Expected task-1 to be completed by the executor");
+const stored = persistence.loadDependencies({
+  check: {
+    entity: "Task",
+    cardinality: "one",
+    where: { id: "task-1" },
+    project: ["isCompleted"],
+    onMissing: "error",
+  },
+}) as { check: { isCompleted: boolean } };
+
+if (stored.check.isCompleted !== true) {
+  throw new Error("Expected task-1 to be completed in the plugin store");
 }
