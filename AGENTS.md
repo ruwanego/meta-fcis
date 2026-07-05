@@ -58,6 +58,7 @@ npx gitnexus@latest analyze && npx gitnexus@latest setup
 pnpm workspace, root `package.json` is private and manages packages only:
 `packages/core` (`@meta-fcis/core`), `packages/shell` (`@meta-fcis/shell`),
 `packages/plugin-persistence-memory` (`@meta-fcis/plugin-persistence-memory`),
+`packages/plugin-transport-http` (`@meta-fcis/plugin-transport-http`),
 `examples/basic`. Verification is smoke scripts (`pnpm smoke`), not a test
 framework. Do not invent extra packages, plugins, shells, or examples unless
 explicitly requested.
@@ -86,6 +87,9 @@ Pure functions receive only a `ContextBundle` (actor, data, dependencies) —
 never framework contexts, raw requests, DB clients, loggers, filesystem, or
 environment. Plugins are `Config -> Adapter` factories and may do effects;
 pure functions may not.
+
+Graphs may carry mechanism metadata (`table`, `transport.method`); only the
+plugin owning that mechanism interprets it — core validates but never reads it.
 
 ## 5. Code Rules
 

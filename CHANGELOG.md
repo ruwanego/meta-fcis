@@ -8,6 +8,8 @@ Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 
 ### Added
 
+- `@meta-fcis/plugin-transport-http`: HTTP transport plugin over `node:http` — maps HTTP requests to core `Request`s, passes engine error statuses through, enforces route `transport.method` (405 `METHOD_NOT_ALLOWED`), rejects malformed JSON (400 `REQUEST_MALFORMED`), and contains handler crashes (500 `TRANSPORT_INTERNAL_ERROR`).
+- Route `transport` block is now typed in `AppGraph` (`RouteDefinition.transport`) and `transport.method` is validated against the closed set `GET | POST | PUT | PATCH | DELETE`.
 - `@meta-fcis/plugin-persistence-memory`: first real plugin package — in-memory persistence adapter with full resolved-selector semantics (where/orderBy/limit/project/cardinality/onMissing) and an atomic `TransactionExecutor` over the same store; CREATE results report generated ids.
 - `examples/basic` now runs on the plugin (and `loadGraph`) instead of hand-written persistence/executor fakes.
 
