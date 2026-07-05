@@ -9,18 +9,21 @@ import { ExpressionScope } from "../expressions/types.js";
 import { evaluatePolicy } from "../policies/evaluatePolicy.js";
 import { authorizeIntentSet } from "../intents/authorizeIntentSet.js";
 import { buildTransactionPlan } from "../transactions/buildTransactionPlan.js";
+import { resolveDependencySelectors } from "../selectors/resolveDependencySelectors.js";
 import { validateIntentSet } from "./validateIntentSet.js";
 
 function buildExpressionScope(args: {
   actor: unknown;
   payload: unknown;
+  params: Record<string, unknown>;
+  query: Record<string, unknown>;
   dependencies: Record<string, unknown>;
 }): ExpressionScope {
   return {
     request: {
       payload: args.payload,
-      params: {},
-      query: {},
+      params: args.params,
+      query: args.query,
     },
     actor: args.actor as Record<string, unknown>,
     dependencies: args.dependencies,
@@ -78,12 +81,38 @@ export async function executeRoute(
       });
     }
 
-    // 5. load dependencies through persistence adapter
+    const requestParams = request.params ?? {};
+    const requestQuery = request.query ?? {};
+
+    // 5. resolve dependency selectors, then load dependencies through persistence adapter
+    const preLoadScope = buildExpressionScope({
+      actor,
+      payload: validatedPayload,
+      params: requestParams,
+      query: requestQuery,
+      dependencies: {},
+    });
+
     let loadedDependencies = {};
-    if (routeConfig.dependencies) {
+    const dependencySelectors = routeConfig.dependencies ?? {};
+    const selectorResolution = resolveDependencySelectors({
+      selectors: dependencySelectors,
+      scope: preLoadScope,
+    });
+
+    if (!selectorResolution.ok) {
+      throw new RuntimeError({
+        code: "DEPENDENCY_SELECTION_FAILED",
+        message: "Dependency selector resolution failed",
+        status: 500,
+        details: selectorResolution.error,
+      });
+    }
+
+    if (Object.keys(selectorResolution.value).length > 0) {
       try {
         loadedDependencies = await adapters.persistence.loadDependencies(
-          routeConfig.dependencies
+          selectorResolution.value
         );
       } catch (err) {
         throw new RuntimeError({
@@ -105,6 +134,8 @@ export async function executeRoute(
     const scope = buildExpressionScope({
       actor,
       payload: validatedPayload,
+      params: requestParams,
+      query: requestQuery,
       dependencies: loadedDependencies,
     });
 

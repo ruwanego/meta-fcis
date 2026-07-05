@@ -2,7 +2,7 @@ import { Actor } from "../protocol/actor.js";
 import { Request } from "../protocol/request.js";
 import { ContextBundle } from "../protocol/context.js";
 import { IntentSet } from "../protocol/intent.js";
-import { DependencyConfig } from "../graph/types.js";
+import { ResolvedDependencySelector } from "../selectors/types.js";
 
 export interface SchemaAdapter {
   validate(schema: unknown, payload: unknown): Promise<unknown> | unknown;
@@ -17,7 +17,7 @@ export interface AuthAdapter {
 
 export interface PersistenceAdapter {
   loadDependencies(
-    dependencies: Record<string, DependencyConfig>
+    dependencies: Record<string, ResolvedDependencySelector>
   ): Promise<Record<string, unknown>> | Record<string, unknown>;
 }
 

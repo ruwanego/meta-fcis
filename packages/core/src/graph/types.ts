@@ -1,8 +1,3 @@
-export interface DependencyConfig {
-  resource: string;
-  params?: Record<string, unknown>;
-}
-
 export type FieldType = "string" | "number" | "boolean" | "object" | "array" | "unknown";
 export type EntityDeletePolicy = "hard" | "soft" | "forbidden";
 export type IntentOperation = "CREATE" | "UPDATE" | "DELETE";
@@ -32,41 +27,40 @@ export interface AllowedIntentDefinition {
 }
 
 export interface RouteDefinition {
-  auth?: {
+  auth: {
     required: boolean;
     roles?: string[];
   };
   policy?: PolicyDefinition;
-  input?: unknown;
-  output?: unknown;
-  handler?: {
+  input: unknown;
+  output: unknown;
+  handler: {
     kind: string;
     file: string;
     function: string;
   };
-  dependencies?: Record<string, DependencyConfig | DependencySelector>;
+  dependencies: Record<string, DependencySelector>;
   allowedIntents: AllowedIntentDefinition[];
 }
 
 export interface RouteConfig extends RouteDefinition {
   path: string;
   schema?: string | Record<string, unknown>;
-  dependencies?: Record<string, DependencyConfig>;
   pureFunction: string;
 }
 
 export interface AppGraph {
-  version: string;
-  irVersion?: string;
-  application?: {
+  irVersion: string;
+  application: {
     name: string;
   };
-  engineCompatibility?: {
+  engineCompatibility: {
     min: string;
     max: string;
   };
-  entities?: Record<string, EntityDefinition>;
-  models?: Record<string, unknown>;
+  entities: Record<string, EntityDefinition>;
+  models: Record<string, unknown>;
+  plugins?: Record<string, unknown>;
   routes: Record<string, RouteConfig>;
 }
 

@@ -16,8 +16,8 @@ const scope = {
   },
   actor: {
     id: "user-1",
-    role: "user",
-    claims: {
+    roles: ["user"],
+    properties: {
       tenantId: "tenant-1"
     }
   },
@@ -104,7 +104,7 @@ assertOkTrue(
     expression: {
       and: [
         { eq: ["$dependencies.targetTask.userId", "$actor.id"] },
-        { eq: ["$dependencies.targetTask.tenantId", "$actor.claims.tenantId"] }
+        { eq: ["$dependencies.targetTask.tenantId", "$actor.properties.tenantId"] }
       ]
     },
     scope
@@ -179,7 +179,7 @@ assertOkFalse(
 // K. in success
 assertOkTrue(
   evaluatePolicyExpression({
-    expression: { in: ["$actor.role", "$request.payload.allowedRoles"] },
+    expression: { in: ["user", "$actor.roles"] },
     scope
   }),
   "K. in success"

@@ -12,7 +12,6 @@ export type { ExecuteRouteResult } from "./protocol/response.js";
 
 // Graph
 export type {
-  DependencyConfig,
   RouteConfig,
   RouteDefinition,
   AppGraph,

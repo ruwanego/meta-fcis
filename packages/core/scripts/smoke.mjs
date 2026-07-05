@@ -65,6 +65,13 @@ async function runSmokeTest() {
             mutable: false,
             creatable: false,
             serverOwned: true
+          },
+          tenantId: {
+            type: "string",
+            required: true,
+            mutable: false,
+            creatable: false,
+            serverOwned: true
           }
         }
       }
@@ -129,10 +136,22 @@ async function runSmokeTest() {
             entity: "Task",
             cardinality: "one",
             where: {
-              id: "$request.payload.taskId"
+              id: "$request.params.taskId",
+              payloadTaskId: "$request.payload.taskId",
+              tenantId: "$actor.properties.tenantId",
+              includeCompleted: "$request.query.includeCompleted"
             },
-            project: ["id", "title", "isCompleted", "userId"],
+            project: ["id", "title", "isCompleted", "userId", "tenantId"],
             onMissing: "null"
+          }
+        },
+        policy: {
+          effect: "allow",
+          when: {
+            and: [
+              { eq: ["$dependencies.targetTask.userId", "$actor.id"] },
+              { eq: ["$dependencies.targetTask.tenantId", "$actor.properties.tenantId"] }
+            ]
           }
         },
         allowedIntents: [
@@ -141,7 +160,7 @@ async function runSmokeTest() {
             entity: "Task",
             operation: "UPDATE",
             fields: ["isCompleted"],
-            targetId: "$request.payload.taskId"
+            targetId: "$request.params.taskId"
           }
         ]
       }
@@ -151,8 +170,12 @@ async function runSmokeTest() {
   const request = {
     route: "Tasks.complete",
     payload: { taskId: "task-1" },
+    params: { taskId: "task-1" },
+    query: { includeCompleted: "false" },
     headers: { authorization: "Bearer some-token" }
   };
+
+  let persistenceSawResolvedSelectors = false;
 
   const adapters = {
     schema: {
@@ -180,20 +203,38 @@ async function runSmokeTest() {
       authenticate: (req, authConfig) => {
         return {
           id: "user-1",
-          role: "user",
           roles: ["user"],
-          claims: {}
+          properties: {
+            tenantId: "tenant-1"
+          }
         };
       }
     },
     persistence: {
       loadDependencies: (deps) => {
+        const where = deps.targetTask?.where;
+        if (!where) {
+          throw new Error("targetTask selector missing");
+        }
+        if (
+          where.id !== "task-1" ||
+          where.payloadTaskId !== "task-1" ||
+          where.tenantId !== "tenant-1" ||
+          where.includeCompleted !== "false"
+        ) {
+          throw new Error(`selector where was not resolved before persistence: ${JSON.stringify(where)}`);
+        }
+        if (Object.values(where).some((value) => typeof value === "string" && value.startsWith("$"))) {
+          throw new Error(`persistence received raw selector expressions: ${JSON.stringify(where)}`);
+        }
+        persistenceSawResolvedSelectors = true;
         return {
           targetTask: {
             id: "task-1",
             title: "Write spec",
             isCompleted: false,
-            userId: "user-1"
+            userId: "user-1",
+            tenantId: "tenant-1"
           }
         };
       }
@@ -284,6 +325,10 @@ async function runSmokeTest() {
   }
 
   console.log("Success test assertions passed.");
+  if (!persistenceSawResolvedSelectors) {
+    console.error("Assertion failed: persistence did not receive resolved dependency selectors");
+    process.exit(1);
+  }
 
   // Test 2: Failure route execution
   try {
@@ -306,6 +351,44 @@ async function runSmokeTest() {
   }
 
   console.log("Failure test assertions passed.");
+
+  const dependencySelectionFailureGraph = JSON.parse(JSON.stringify(graph));
+  dependencySelectionFailureGraph.routes["Tasks.complete"].dependencies.targetTask.where.id =
+    "$request.payload.missing";
+  let persistenceCalledForSelectionFailure = false;
+
+  try {
+    await executeRoute(dependencySelectionFailureGraph, request, {
+      ...adapters,
+      persistence: {
+        loadDependencies: () => {
+          persistenceCalledForSelectionFailure = true;
+          return {};
+        }
+      }
+    });
+    console.error("Assertion failed: expected DEPENDENCY_SELECTION_FAILED for unresolved selector.");
+    process.exit(1);
+  } catch (error) {
+    if (!(error instanceof RuntimeError)) {
+      console.error("Assertion failed: expected dependency selection error to be RuntimeError, got:", error);
+      process.exit(1);
+    }
+    if (error.code !== "DEPENDENCY_SELECTION_FAILED") {
+      console.error(`Assertion failed: expected dependency selection code DEPENDENCY_SELECTION_FAILED, got "${error.code}"`);
+      process.exit(1);
+    }
+    if (error.status !== 500) {
+      console.error(`Assertion failed: expected dependency selection status 500, got ${error.status}`);
+      process.exit(1);
+    }
+    if (persistenceCalledForSelectionFailure) {
+      console.error("Assertion failed: persistence should not run after selector resolution failure.");
+      process.exit(1);
+    }
+  }
+
+  console.log("Dependency selector pipeline assertions passed.");
 
   const policyDeniedGraph = JSON.parse(JSON.stringify(graph));
   policyDeniedGraph.routes["Tasks.complete"].policy = {

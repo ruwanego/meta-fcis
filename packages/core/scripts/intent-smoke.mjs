@@ -123,8 +123,8 @@ const scope = {
   },
   actor: {
     id: "user-1",
-    role: "user",
-    claims: {}
+    roles: ["user"],
+    properties: {}
   },
   dependencies: {}
 };

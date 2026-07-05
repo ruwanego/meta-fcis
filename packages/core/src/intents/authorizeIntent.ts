@@ -260,7 +260,7 @@ export function authorizeIntent(args: AuthorizeIntentArgs): IntentAuthorizationR
   const intentMeta = intent.meta;
   const entityName = intentMeta.entityName;
   const operation = intentMeta.operation;
-  const entity = graph.entities?.[entityName];
+  const entity = graph.entities[entityName];
 
   if (!entity) {
     return failure({

@@ -12,8 +12,8 @@ const scope = {
   },
   actor: {
     id: "user-1",
-    role: "user",
-    claims: { tenantId: "tenant-1" }
+    roles: ["user"],
+    properties: { tenantId: "tenant-1" }
   },
   dependencies: {
     currentTenant: {
@@ -40,7 +40,7 @@ console.log("Running selector smoke test...");
 const whereA = {
   id: "$request.payload.taskId",
   userId: "$actor.id",
-  tenantId: "$actor.claims.tenantId",
+  tenantId: "$actor.properties.tenantId",
   isCompleted: false,
   literalName: "Task"
 };
@@ -92,7 +92,7 @@ const selectorsE = {
     entity: "Tenant",
     cardinality: "one",
     where: {
-      id: "$actor.claims.tenantId"
+      id: "$actor.properties.tenantId"
     },
     project: ["id"],
     onMissing: "null"

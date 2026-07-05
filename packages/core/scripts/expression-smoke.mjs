@@ -11,8 +11,8 @@ const scope = {
   },
   actor: {
     id: "user-1",
-    role: "user",
-    claims: { tenantId: "tenant-1" }
+    roles: ["user"],
+    properties: { tenantId: "tenant-1" }
   },
   dependencies: {
     targetTask: {
@@ -66,8 +66,8 @@ assertResolution(resolveExpression({ expression: "$request.query.page", scope })
 // 4. "$actor.id" resolves to "user-1"
 assertResolution(resolveExpression({ expression: "$actor.id", scope }), "user-1");
 
-// 5. "$actor.claims.tenantId" resolves to "tenant-1"
-assertResolution(resolveExpression({ expression: "$actor.claims.tenantId", scope }), "tenant-1");
+// 5. "$actor.properties.tenantId" resolves to "tenant-1"
+assertResolution(resolveExpression({ expression: "$actor.properties.tenantId", scope }), "tenant-1");
 
 // 6. "$dependencies.targetTask.userId" resolves to "user-1"
 assertResolution(resolveExpression({ expression: "$dependencies.targetTask.userId", scope }), "user-1");
