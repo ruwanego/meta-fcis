@@ -95,18 +95,78 @@ Milestone 10:
 - no real plugins
 - no database
 - no transaction execution
+
+Milestone 11:
+- TransactionExecutor adapter contract in core (never invoked by core)
+- TRANSACTION_EXECUTION_FAILED error code
+- opt-in shell execution step via caller-supplied executor
+- fake in-memory executor in the basic example
+- core pipeline still never executes
 ```
 
 Current status:
 
 ```txt
-Current status: @meta-fcis/core semantic functions completed through Milestone 8, with RuntimeError and IntentSet contract fixes applied. @meta-fcis/shell plain runtime scaffold completed through Milestone 9. Basic in-memory example completed through Milestone 10.
-Next milestone must be explicitly requested.
+Current status: @meta-fcis/core semantic functions completed through Milestone 8, plus the Milestone 11 TransactionExecutor contract. @meta-fcis/shell runtime completed through Milestone 11 (opt-in execution via caller-supplied executor). Basic in-memory example completed through Milestone 11.
+Next milestone must be explicitly requested (see ROADMAP.md).
 ```
 
 Do not build future milestones.
 
 Do not add frameworks.
+
+---
+
+## 2.1 OpenSpec Workflow
+
+This repo uses OpenSpec (`openspec/`) for spec-driven development.
+
+### Harness Bootstrap
+
+The source of truth for every AI harness is this file plus `openspec/`. Per-tool
+integration dirs (`.cursor/`, `.codex/`, `.gemini/`, `.windsurf/`, ...) are
+generated artifacts and are gitignored — only `.claude/` is committed as the
+canonical copy. After cloning, regenerate them once:
+
+```sh
+# pick your tools, e.g. --tools cursor,codex,antigravity — or all
+npx @fission-ai/openspec@latest init --tools all --force   # or bunx
+npx gitnexus@latest analyze                                # refresh code index
+npx gitnexus@latest setup                                  # MCP + skills, user-level
+```
+
+Any harness without a generated integration still gets full project knowledge
+by reading this AGENTS.md and the specs in `openspec/specs/`.
+
+Baseline specs in `openspec/specs/` capture the behavior completed through Milestone 10. They are the source of truth for what the engine does:
+
+```txt
+graph-validation
+expression-resolution
+dependency-selection
+policy-evaluation
+intent-authorization
+transaction-planning
+route-execution
+shell-runtime
+basic-example
+```
+
+All new work goes through an OpenSpec change:
+
+```txt
+/opsx:propose  -> create a change with proposal, design, delta specs, tasks
+/opsx:apply    -> implement the tasks
+/opsx:archive  -> sync delta specs into openspec/specs/ and archive the change
+```
+
+Rules:
+
+- Do not implement behavior that has no approved change under `openspec/changes/`.
+- Keep `openspec/specs/` in sync with shipped behavior; a merged behavior change without a spec update is a defect.
+- A "next milestone" request means: propose an OpenSpec change first, get it approved, then implement.
+- The milestone queue lives in `ROADMAP.md`; take the top unstarted item unless told otherwise.
+- Run `openspec validate --all` after touching specs.
 
 Do not add real plugins.
 
@@ -333,7 +393,7 @@ open sockets
 load plugins
 implement auth providers
 connect to databases
-execute transactions
+execute transactions directly (only via a caller-supplied TransactionExecutor)
 ```
 
 ---
@@ -744,3 +804,48 @@ Small first.
 Compile first.
 
 Commit clean.
+
+<!-- gitnexus:start -->
+# GitNexus — Code Intelligence
+
+This project is indexed by GitNexus as **meta-fcis** (360 symbols, 734 relationships, 19 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+
+> Index stale? Run `node .gitnexus/run.cjs analyze` from the project root — it auto-selects an available runner. No `.gitnexus/run.cjs` yet? `npx gitnexus analyze` (npm 11 crash → `npm i -g gitnexus`; #1939).
+
+## Always Do
+
+- **MUST run impact analysis before editing any symbol.** Before modifying a function, class, or method, run `impact({target: "symbolName", direction: "upstream"})` and report the blast radius (direct callers, affected processes, risk level) to the user.
+- **MUST run `detect_changes()` before committing** to verify your changes only affect expected symbols and execution flows. For regression review, compare against the default branch: `detect_changes({scope: "compare", base_ref: "main"})`.
+- **MUST warn the user** if impact analysis returns HIGH or CRITICAL risk before proceeding with edits.
+- When exploring unfamiliar code, use `query({search_query: "concept"})` to find execution flows instead of grepping. It returns process-grouped results ranked by relevance.
+- When you need full context on a specific symbol — callers, callees, which execution flows it participates in — use `context({name: "symbolName"})`.
+- For security review, `explain({target: "fileOrSymbol"})` lists taint findings (source→sink flows; needs `analyze --pdg`).
+
+## Never Do
+
+- NEVER edit a function, class, or method without first running `impact` on it.
+- NEVER ignore HIGH or CRITICAL risk warnings from impact analysis.
+- NEVER rename symbols with find-and-replace — use `rename` which understands the call graph.
+- NEVER commit changes without running `detect_changes()` to check affected scope.
+
+## Resources
+
+| Resource | Use for |
+|----------|---------|
+| `gitnexus://repo/meta-fcis/context` | Codebase overview, check index freshness |
+| `gitnexus://repo/meta-fcis/clusters` | All functional areas |
+| `gitnexus://repo/meta-fcis/processes` | All execution flows |
+| `gitnexus://repo/meta-fcis/process/{name}` | Step-by-step execution trace |
+
+## CLI
+
+| Task | Read this skill file |
+|------|---------------------|
+| Understand architecture / "How does X work?" | `.claude/skills/gitnexus/gitnexus-exploring/SKILL.md` |
+| Blast radius / "What breaks if I change X?" | `.claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
+| Trace bugs / "Why is X failing?" | `.claude/skills/gitnexus/gitnexus-debugging/SKILL.md` |
+| Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
+| Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
+| Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
+
+<!-- gitnexus:end -->
