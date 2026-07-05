@@ -1,0 +1,49 @@
+{
+  "name": "@meta-fcis/plugin-auth",
+  "version": "0.1.0",
+  "description": "Token-registry authentication plugin for Meta-FCIS: bearer tokens resolved to actors.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruwanego/meta-fcis.git",
+    "directory": "packages/plugin-auth"
+  },
+  "bugs": {
+    "url": "https://github.com/ruwanego/meta-fcis/issues"
+  },
+  "homepage": "https://github.com/ruwanego/meta-fcis#readme",
+  "keywords": [
+    "meta-fcis",
+    "auth",
+    "bearer",
+    "plugin"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "smoke": "pnpm build && node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@meta-fcis/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@meta-fcis/plugin-persistence-memory": "workspace:*",
+    "@meta-fcis/plugin-schema": "workspace:*",
+    "@meta-fcis/shell": "workspace:*"
+  }
+}

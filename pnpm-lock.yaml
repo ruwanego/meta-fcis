@@ -26,6 +26,22 @@ importers:
 
   packages/core: {}
 
+  packages/plugin-auth:
+    dependencies:
+      '@meta-fcis/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@meta-fcis/plugin-persistence-memory':
+        specifier: workspace:*
+        version: link:../plugin-persistence-memory
+      '@meta-fcis/plugin-schema':
+        specifier: workspace:*
+        version: link:../plugin-schema
+      '@meta-fcis/shell':
+        specifier: workspace:*
+        version: link:../shell
+
   packages/plugin-persistence-memory:
     dependencies:
       '@meta-fcis/core':
