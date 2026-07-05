@@ -12,6 +12,16 @@ pipeline through transaction planning, plain shell runtime, in-memory example.
 Milestone 11 (`transaction-execution-boundary`) shipped 2026-07-05; archived at
 `openspec/changes/archive/2026-07-05-transaction-execution-boundary/`.
 
+## Immediate next steps (process, not milestones)
+
+- [ ] Merge `feat/m11-transaction-execution` into `main` via PR; CI runs
+      build + typecheck + smoke on the PR.
+- [ ] After merge: re-run `gitnexus analyze` on `main` (it will regenerate
+      `CLAUDE.md` — delete it; AGENTS.md carries the same block).
+- [ ] Optional: first prereleases per RELEASE.md — both packages are at
+      `0.1.0 - Unreleased`; date the CHANGELOG entry, tag `core-v0.1.0` and
+      `shell-v0.1.0`. npm publish stays deferred.
+
 ## Next up
 
 1. **graph-loading** (M12)
