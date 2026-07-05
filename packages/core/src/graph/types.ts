@@ -36,6 +36,7 @@ export interface RouteDefinition {
     required: boolean;
     roles?: string[];
   };
+  policy?: PolicyDefinition;
   input?: unknown;
   output?: unknown;
   handler?: {

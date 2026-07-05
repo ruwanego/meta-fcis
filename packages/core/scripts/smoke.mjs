@@ -15,7 +15,8 @@ async function executeRoute(graph, request, adapters) {
         routeKey: request.route,
         graphVersion: graph.irVersion || graph.version
       },
-      intentSet: res.intentSet
+      intentSet: res.intentSet,
+      transactionPlan: res.transactionPlan
     };
   } catch (error) {
     throw error;
@@ -264,6 +265,23 @@ async function runSmokeTest() {
     console.error(`Assertion failed: expected diagnostics.graphVersion to be "meta-fcis.graph.v1", got "${result.diagnostics?.graphVersion}"`);
     process.exit(1);
   }
+  if (!Array.isArray(result.transactionPlan?.operations)) {
+    console.error("Assertion failed: expected transactionPlan.operations to be an array");
+    process.exit(1);
+  }
+  if (result.transactionPlan.operations.length !== 1) {
+    console.error(`Assertion failed: expected 1 transaction operation, got ${result.transactionPlan.operations.length}`);
+    process.exit(1);
+  }
+  const operation = result.transactionPlan.operations[0];
+  if (operation.kind !== "UPDATE" || operation.entity !== "Task" || operation.targetId !== "task-1") {
+    console.error("Assertion failed: unexpected transaction operation:", operation);
+    process.exit(1);
+  }
+  if (operation.payload?.isCompleted !== true) {
+    console.error("Assertion failed: expected transaction payload.isCompleted to be true:", operation.payload);
+    process.exit(1);
+  }
 
   console.log("Success test assertions passed.");
 
@@ -288,6 +306,74 @@ async function runSmokeTest() {
   }
 
   console.log("Failure test assertions passed.");
+
+  const policyDeniedGraph = JSON.parse(JSON.stringify(graph));
+  policyDeniedGraph.routes["Tasks.complete"].policy = {
+    effect: "deny",
+    when: true
+  };
+
+  try {
+    await executeRoute(policyDeniedGraph, request, adapters);
+    console.error("Assertion failed: expected AUTHORIZATION_FAILED for route policy denial.");
+    process.exit(1);
+  } catch (error) {
+    if (!(error instanceof RuntimeError)) {
+      console.error("Assertion failed: expected policy denial error to be RuntimeError, got:", error);
+      process.exit(1);
+    }
+    if (error.code !== "AUTHORIZATION_FAILED") {
+      console.error(`Assertion failed: expected policy denial code AUTHORIZATION_FAILED, got "${error.code}"`);
+      process.exit(1);
+    }
+    if (error.status !== 403) {
+      console.error(`Assertion failed: expected policy denial status 403, got ${error.status}`);
+      process.exit(1);
+    }
+  }
+
+  const unauthorizedIntentAdapters = {
+    ...adapters,
+    pureInvoker: {
+      invoke: () => ({
+        success: true,
+        httpStatus: 200,
+        responsePayload: { success: true },
+        intents: [
+          {
+            type: "MUTATE_ENTITY",
+            meta: {
+              entityName: "Task",
+              operation: "UPDATE",
+              targetId: "task-1"
+            },
+            payload: { title: "Unauthorized title update" }
+          }
+        ]
+      })
+    }
+  };
+
+  try {
+    await executeRoute(graph, request, unauthorizedIntentAdapters);
+    console.error("Assertion failed: expected AUTHORIZATION_FAILED for unauthorized intent.");
+    process.exit(1);
+  } catch (error) {
+    if (!(error instanceof RuntimeError)) {
+      console.error("Assertion failed: expected intent authorization error to be RuntimeError, got:", error);
+      process.exit(1);
+    }
+    if (error.code !== "AUTHORIZATION_FAILED") {
+      console.error(`Assertion failed: expected intent authorization code AUTHORIZATION_FAILED, got "${error.code}"`);
+      process.exit(1);
+    }
+    if (error.status !== 403) {
+      console.error(`Assertion failed: expected intent authorization status 403, got ${error.status}`);
+      process.exit(1);
+    }
+  }
+
+  console.log("Semantic wiring assertions passed.");
 
   const validIntentSet = validateIntentSet({
     success: true,

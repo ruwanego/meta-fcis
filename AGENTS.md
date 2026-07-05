@@ -71,12 +71,19 @@ Milestone 6:
 
 Milestone 7:
 - strict graph validator
+
+Milestone 8:
+- semantic pipeline wiring
+- route policy evaluation
+- intent authorization
+- transaction planning
+- no transaction execution
 ```
 
 Current status:
 
 ```txt
-Current status: @meta-fcis/core standalone semantic functions completed through Milestone 6.
+Current status: @meta-fcis/core semantic functions completed through Milestone 8, with RuntimeError and IntentSet contract fixes applied.
 Next milestone must be explicitly requested.
 ```
 
@@ -267,7 +274,9 @@ validate IntentSet shape
 return ExecuteRouteResult
 ```
 
-executeRoute.ts must not yet be wired to policy evaluation, intent authorization, transaction planning, or transaction execution unless explicitly requested in a future milestone.
+executeRoute.ts may wire policy evaluation, intent authorization, and transaction planning only as completed Milestone 8 semantic checks.
+
+executeRoute.ts must not execute transactions.
 
 Current core must not:
 
@@ -487,6 +496,7 @@ Completed order:
 12. Intent authorization
 13. Transaction plan builder
 14. Strict graph validator
+15. Semantic pipeline wiring
 ```
 
 Future work requires explicit instruction.
