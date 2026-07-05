@@ -29,6 +29,10 @@ export type {
   PolicyDefinition,
 } from "./graph/types.js";
 export { validateGraph } from "./graph/validateGraph.js";
+export { loadGraph } from "./graph/loadGraph.js";
+
+// Engine
+export { ENGINE_VERSION } from "./version.js";
 
 // Adapters
 export type {
