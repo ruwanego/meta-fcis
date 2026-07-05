@@ -36,6 +36,7 @@ export type {
   AuthAdapter,
   PersistenceAdapter,
   PureInvoker,
+  TransactionExecutor,
   RuntimeAdapters,
 } from "./adapters/types.js";
 
@@ -100,6 +101,8 @@ export type {
   DeleteOperation,
   TransactionOperation,
   TransactionPlan,
+  TransactionOperationResult,
+  TransactionExecutionResult,
   TransactionPlanErrorReason,
   TransactionPlanError,
   TransactionPlanResult,
