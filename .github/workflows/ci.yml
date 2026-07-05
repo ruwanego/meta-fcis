@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    name: Core
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Smoke
+        run: |
+          pnpm --filter @meta-fcis/core smoke
+          pnpm --filter @meta-fcis/core smoke:expressions
+          pnpm --filter @meta-fcis/core smoke:selectors
+          pnpm --filter @meta-fcis/core smoke:policies
+          pnpm --filter @meta-fcis/core smoke:intents
+          pnpm --filter @meta-fcis/core smoke:transactions
+          pnpm --filter @meta-fcis/core smoke:graph
