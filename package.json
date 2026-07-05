@@ -1,11 +1,22 @@
 {
   "name": "meta-fcis",
   "private": true,
+  "description": "Graph-centered, plugin-driven, LLM-safe application engine workspace.",
+  "license": "UNLICENSED",
   "type": "module",
   "packageManager": "pnpm@11.9.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruwanego/meta-fcis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ruwanego/meta-fcis/issues"
+  },
+  "homepage": "https://github.com/ruwanego/meta-fcis#readme",
   "scripts": {
     "build": "pnpm -r build",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "smoke": "pnpm --filter @meta-fcis/core smoke && pnpm --filter @meta-fcis/core smoke:expressions && pnpm --filter @meta-fcis/core smoke:selectors && pnpm --filter @meta-fcis/core smoke:policies && pnpm --filter @meta-fcis/core smoke:intents && pnpm --filter @meta-fcis/core smoke:transactions && pnpm --filter @meta-fcis/core smoke:graph"
   },
   "devDependencies": {
     "typescript": "^6.0.3"

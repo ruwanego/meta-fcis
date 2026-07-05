@@ -42,11 +42,4 @@ jobs:
         run: pnpm typecheck
 
       - name: Smoke
-        run: |
-          pnpm --filter @meta-fcis/core smoke
-          pnpm --filter @meta-fcis/core smoke:expressions
-          pnpm --filter @meta-fcis/core smoke:selectors
-          pnpm --filter @meta-fcis/core smoke:policies
-          pnpm --filter @meta-fcis/core smoke:intents
-          pnpm --filter @meta-fcis/core smoke:transactions
-          pnpm --filter @meta-fcis/core smoke:graph
+        run: pnpm smoke

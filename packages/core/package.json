@@ -1,9 +1,38 @@
 {
   "name": "@meta-fcis/core",
   "version": "0.1.0",
+  "description": "Runtime-agnostic semantic core for Meta-FCIS application graphs.",
+  "license": "UNLICENSED",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruwanego/meta-fcis.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/ruwanego/meta-fcis/issues"
+  },
+  "homepage": "https://github.com/ruwanego/meta-fcis#readme",
+  "keywords": [
+    "application-graph",
+    "semantic-core",
+    "runtime-agnostic",
+    "policy",
+    "intent-planning"
+  ],
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
