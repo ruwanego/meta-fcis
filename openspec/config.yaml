@@ -1,0 +1,38 @@
+schema: spec-driven
+
+context: |
+  Meta-FCIS: a graph-centered, plugin-driven, LLM-safe application engine.
+
+  Architecture:
+  - app-graph.json is the application contract; @meta-fcis/core is a semantic
+    microkernel that interprets it. Plugins own mechanisms (adapters), pure
+    functions own domain decisions (ContextBundle -> IntentSet).
+  - Dependency direction: shell -> core, plugins -> core, examples -> core.
+    Core depends on nothing framework-specific and has ZERO runtime dependencies.
+  - Core builds transaction plans but NEVER executes transactions. The shell
+    scaffold never serves HTTP, opens sockets, loads plugins, or touches databases.
+
+  Tech stack: TypeScript (strict, ESM, NodeNext, `.js` extensions in relative
+  imports), pnpm workspace, smoke scripts (`pnpm smoke`) instead of a test framework.
+  Packages: packages/core (@meta-fcis/core), packages/shell (@meta-fcis/shell),
+  examples/basic (@meta-fcis/example-basic).
+
+  Forbidden in core: TypeSpec, Elysia, Eden, Effect, Zod, Valibot, Express,
+  Fastify, Hono, SQL/ORMs, database clients, auth/JWT/OIDC libraries, Redis,
+  queues, HTTP servers, Bun- or Node-specific APIs, decorators, code generation.
+
+  Conventions: conventional commits (feat(core): ..., chore(repo): ...), small
+  commits, `pnpm build && pnpm typecheck` must pass before every commit.
+  See AGENTS.md for the full agent contract.
+
+  Workflow: baseline specs in openspec/specs/ describe what is already built
+  (Milestones 0-10). All new work goes through an OpenSpec change
+  (propose -> apply -> archive). Do not build beyond the specs without an
+  explicitly requested change.
+
+rules:
+  proposal:
+    - Always include a "Non-goals" section; scope creep into frameworks, plugins, HTTP, databases, or transaction execution must be called out explicitly
+  specs:
+    - Requirements describe engine semantics, not implementation files
+    - Every error path names its RuntimeError code or result reason

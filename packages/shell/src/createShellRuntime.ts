@@ -26,16 +26,44 @@ function toShellError(error: unknown): ShellError {
 }
 
 export async function runRoute(args: ShellRunRouteArgs): Promise<ShellRouteResult> {
+  let value;
   try {
-    const value = await executeRoute(args.graph, args.request, args.adapters);
-    return {
-      ok: true,
-      value,
-    };
+    value = await executeRoute(args.graph, args.request, args.adapters);
   } catch (error) {
     return {
       ok: false,
       error: toShellError(error),
+    };
+  }
+
+  if (!args.transactionExecutor) {
+    return {
+      ok: true,
+      value,
+    };
+  }
+
+  try {
+    const execution = await args.transactionExecutor.execute(value.transactionPlan);
+    return {
+      ok: true,
+      value: {
+        ...value,
+        execution,
+      },
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error: {
+        code: "TRANSACTION_EXECUTION_FAILED",
+        message: `Transaction execution failed: ${error instanceof Error ? error.message : String(error)}`,
+        status: 500,
+        details: {
+          plan: value.transactionPlan,
+          cause: error,
+        },
+      },
     };
   }
 }
@@ -46,6 +74,7 @@ export function createShellRuntime(config: ShellRuntimeConfig): ShellRuntime {
       return runRoute({
         graph: config.graph,
         adapters: config.adapters,
+        transactionExecutor: config.transactionExecutor,
         request,
       });
     },

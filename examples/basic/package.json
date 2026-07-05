@@ -12,6 +12,7 @@
     "smoke": "pnpm build && node dist/index.js"
   },
   "dependencies": {
+    "@meta-fcis/core": "workspace:*",
     "@meta-fcis/shell": "workspace:*"
   }
 }

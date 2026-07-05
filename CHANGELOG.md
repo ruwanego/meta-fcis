@@ -4,7 +4,7 @@ All notable changes to this repository will be documented in this file.
 
 Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 
-## 0.1.0 - Unreleased
+## 0.1.0 - 2026-07-05
 
 ### Added
 
@@ -23,6 +23,11 @@ Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 - GitHub Actions CI for build, typecheck, and smoke verification.
 - `@meta-fcis/shell` plain runtime shell scaffold.
 - Basic in-memory example using `@meta-fcis/shell`.
+- `TransactionExecutor` adapter contract and execution result types in core (contract only; the core pipeline never executes).
+- `TRANSACTION_EXECUTION_FAILED` runtime error code.
+- Opt-in shell transaction execution through a caller-supplied executor.
+- Fake in-memory transaction executor in the basic example.
+- OpenSpec spec-driven workflow with baseline specs in `openspec/specs/`.
 
 ### Changed
 
@@ -33,6 +38,6 @@ Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 
 ### Notes
 
-- The core does not execute transactions.
+- The core does not execute transactions; the shell executes only via a caller-supplied `TransactionExecutor`.
 - The core has no runtime dependencies.
 - Future semantic milestones require explicit request before implementation.

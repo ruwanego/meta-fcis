@@ -31,6 +31,17 @@ export interface TransactionPlan {
   operations: TransactionOperation[];
 }
 
+export interface TransactionOperationResult {
+  kind: TransactionOperationKind;
+  entity: string;
+  targetId?: string;
+  outcome: "applied";
+}
+
+export interface TransactionExecutionResult {
+  operations: TransactionOperationResult[];
+}
+
 export type TransactionPlanErrorReason =
   | "TRANSACTION_INTENT_UNSUPPORTED"
   | "TRANSACTION_TARGET_REQUIRED"

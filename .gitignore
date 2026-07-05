@@ -7,6 +7,41 @@ coverage/
 logs
 *.log
 # Temporary agent files or scratch files
-.gemini/
 brain/
 scratch/
+
+# Generated AI-harness integrations — derived from AGENTS.md + openspec/.
+# Regenerate after clone: see "Harness Bootstrap" in AGENTS.md.
+# (.claude/ stays committed as the canonical copy; .github/workflows stays tracked.)
+.agent/
+.agents/
+.amazonq/
+.augment/
+.bob/
+.cline/
+.clinerules/
+.codebuddy/
+.codex/
+.continue/
+.cospec/
+.crush/
+.cursor/
+.factory/
+.forge/
+.gemini/
+.github/prompts/
+.github/skills/
+.iflow/
+.junie/
+.kilocode/
+.kimi/
+.kiro/
+.lingma/
+.opencode/
+.pi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
