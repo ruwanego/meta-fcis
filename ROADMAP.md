@@ -19,22 +19,19 @@ Milestone 12 (`graph-loading`) shipped 2026-07-05; archived at
 `openspec/changes/archive/2026-07-05-graph-loading/`.
 Milestone 13 (`plugin-persistence-memory`) shipped 2026-07-05; archived at
 `openspec/changes/archive/2026-07-05-plugin-persistence-memory/`.
+Milestone 14 (`plugin-transport-http`) shipped 2026-07-05; archived at
+`openspec/changes/archive/2026-07-05-plugin-transport-http/`. The engine is
+now curl-able; route `transport.method` is typed and enforced at the edge.
 
 ## Next up
 
-1. **plugin-transport-http** (M14)
-   HTTP transport plugin mapping requests to the shell and `RuntimeError`
-   codes/status to HTTP responses. First package allowed to know HTTP; core
-   and shell stay transport-free. Moved ahead of schema/auth: with persistence
-   (M13) it makes the engine a visibly runnable service, and the existing fake
-   schema/auth adapters suffice for a demo.
+1. **plugin-schema** (M15) — schema validation plugin wrapping a real
+   validator (outside core; core keeps only the adapter interface).
 
 ## Later (order tentative)
 
-2. **plugin-schema** — schema validation plugin wrapping a real validator
-   (outside core; core keeps only the adapter interface).
-3. **plugin-auth** — auth plugin (e.g. token → actor) behind the auth adapter.
-4. **e2e-example** — example app wiring transport + schema + auth +
+2. **plugin-auth** — auth plugin (e.g. token → actor) behind the auth adapter.
+3. **e2e-example** — example app wiring transport + schema + auth +
    persistence + executor plugins end to end. Milestone for a `0.2.0` release
    line across packages.
 
