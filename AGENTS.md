@@ -138,7 +138,7 @@ npx gitnexus@latest setup                                  # MCP + skills, user-
 Any harness without a generated integration still gets full project knowledge
 by reading this AGENTS.md and the specs in `openspec/specs/`.
 
-Baseline specs in `openspec/specs/` capture the behavior completed through Milestone 10. They are the source of truth for what the engine does:
+Baseline specs in `openspec/specs/` capture the behavior completed through Milestone 11. They are the source of truth for what the engine does:
 
 ```txt
 graph-validation
@@ -147,6 +147,7 @@ dependency-selection
 policy-evaluation
 intent-authorization
 transaction-planning
+transaction-execution
 route-execution
 shell-runtime
 basic-example
