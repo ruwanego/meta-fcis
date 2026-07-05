@@ -87,12 +87,20 @@ Milestone 9:
 - no framework shell
 - no real plugins
 - no transaction execution
+
+Milestone 10:
+- basic in-memory example
+- example uses shell
+- no HTTP server
+- no real plugins
+- no database
+- no transaction execution
 ```
 
 Current status:
 
 ```txt
-Current status: @meta-fcis/core semantic functions completed through Milestone 8, with RuntimeError and IntentSet contract fixes applied. @meta-fcis/shell plain runtime scaffold completed through Milestone 9.
+Current status: @meta-fcis/core semantic functions completed through Milestone 8, with RuntimeError and IntentSet contract fixes applied. @meta-fcis/shell plain runtime scaffold completed through Milestone 9. Basic in-memory example completed through Milestone 10.
 Next milestone must be explicitly requested.
 ```
 
@@ -191,6 +199,14 @@ meta-fcis/
         index.ts
         types.ts
         createShellRuntime.ts
+
+  examples/
+    basic/
+      package.json
+      tsconfig.json
+      README.md
+      src/
+        index.ts
 ```
 
 Do not invent extra packages yet.
@@ -199,7 +215,7 @@ Do not create additional shell packages beyond `packages/shell` unless explicitl
 
 Do not create plugins yet.
 
-Do not create examples yet unless explicitly requested.
+Do not create additional examples beyond `examples/basic` unless explicitly requested.
 
 ---
 
@@ -530,6 +546,7 @@ Completed order:
 14. Strict graph validator
 15. Semantic pipeline wiring
 16. Plain runtime shell scaffold
+17. Basic in-memory example
 ```
 
 Future work requires explicit instruction.
@@ -598,6 +615,15 @@ packages/shell/scripts/smoke.mjs
 packages/shell/src/index.ts
 packages/shell/src/types.ts
 packages/shell/src/createShellRuntime.ts
+```
+
+Required files for Milestone 10:
+
+```txt
+examples/basic/package.json
+examples/basic/tsconfig.json
+examples/basic/README.md
+examples/basic/src/index.ts
 ```
 
 ---

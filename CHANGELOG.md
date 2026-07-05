@@ -22,6 +22,7 @@ Releases are package-scoped. See [RELEASE.md](./RELEASE.md).
 - Core smoke verification scripts.
 - GitHub Actions CI for build, typecheck, and smoke verification.
 - `@meta-fcis/shell` plain runtime shell scaffold.
+- Basic in-memory example using `@meta-fcis/shell`.
 
 ### Changed
 

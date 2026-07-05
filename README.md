@@ -2,7 +2,7 @@
 
 Meta-FCIS is a graph-centered, plugin-driven, LLM-safe application engine.
 
-The current repository contains the semantic core and a plain runtime shell scaffold. It is not a web framework, HTTP server, database layer, plugin package, or code generator.
+The current repository contains the semantic core, a plain runtime shell scaffold, and a basic in-memory example. It is not a web framework, HTTP server, database layer, plugin package, or code generator.
 
 ```txt
 app-graph.json = application contract
@@ -36,6 +36,14 @@ The core builds transaction plans but does not execute transactions.
 - delegates route execution to core
 - converts core `RuntimeError` failures into shell result objects
 - does not serve HTTP, open sockets, load plugins, connect to databases, or execute transactions
+
+`@meta-fcis/example-basic` is complete through Milestone 10:
+
+- builds an in-memory graph
+- provides fake adapters
+- invokes the shell runtime
+- prints the response payload and transaction plan
+- does not execute the transaction plan
 
 The next semantic milestone must be explicitly requested before implementation.
 
@@ -95,6 +103,10 @@ packages/shell/
     types.ts
   scripts/
     smoke.mjs
+
+examples/basic/
+  src/
+    index.ts
 ```
 
 ## Development
@@ -121,6 +133,12 @@ Run all smoke verification:
 
 ```sh
 pnpm smoke
+```
+
+Run the basic example:
+
+```sh
+pnpm --filter @meta-fcis/example-basic start
 ```
 
 CI runs the same build, typecheck, and smoke checks on `main`.
